@@ -24,6 +24,7 @@ def absPosToFrame(buoys: list, pos: list):
     return rectangles
 
 def calculateCorners(center, height, width):
+    # [X, Y, Z]
     # Y is constant from view.
     corners = []
     corners[0] = [center[0] + width/2 + height/2, center[1], center[2] + width/2 - height/2]
