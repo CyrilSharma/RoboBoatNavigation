@@ -5,7 +5,7 @@ import Buoy
 
 def getBuoys(task: str):
     buoys = getBuoysAbs(task)
-    pass
+    return absPosToFrame(buoys, Constants.CAMERA_POS)
 
 def getBuoysAbs(task: str):
     with open('BuoyPositions.json') as f:
