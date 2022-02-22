@@ -3,9 +3,9 @@ import json
 import Constants
 import Buoy
 
-def getBuoys(task: str):
+def getBuoys(task: str, pos: list):
     buoys = getBuoysAbs(task)
-    return absPosToFrame(buoys, Constants.CAMERA_POS)
+    return absPosToFrame(buoys, pos)
 
 def getBuoysAbs(task: str):
     with open('BuoyPositions.json') as f:
