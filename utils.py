@@ -3,7 +3,7 @@ import json
 import Constants
 import Buoy
 
-def getBuoys(task: str, pos: list):
+def getBuoys(task: str, pos):
     buoys = getBuoysAbs(task)
     return absPosToFrame(buoys, pos)
 
@@ -11,21 +11,21 @@ def getBuoysAbs(task: str):
     with open('BuoyPositions.json') as f:
         buoys = json.load(f)
     
-    rects = []
+    rects = {}
     for color in buoys[task]:
         for buoy in buoys[task][color]:
-            rects.append(Buoy(calculateCorners(buoy['center'], buoy['height'], buoy['width']), color))
-
+            rects[color] = (Buoy(calculateCorners(buoy['center'], buoy['height'], buoy['width']), buoy['center'], color))
     return rects
 
-def absPosToFrame(buoys: Buoy, pos: list):
-    rects = []
-    for buoy in buoys:
-        frame_corners = []
-        for corner in buoy.corners:
-            pixel_pos = [Constants.CAMERA_RATIO * (corner[0] - pos[0]), Constants.CAMERA_RATIO * (corner[2] - pos[2])]
-            frame_corners.append(pixel_pos)
-        rects.append(Buoy(frame_corners, buoy.color))
+def absPosToFrame(buoys: Buoy, pos):
+    rects = {}
+    for color in buoys:
+        for buoy in buoys:
+            frame_corners = []
+            for corner in buoy.corners:
+                pixel_pos = [Constants.CAMERA_RATIO * (corner[0] - pos[0]), Constants.CAMERA_RATIO * (corner[2] - pos[2])]
+                frame_corners.append(pixel_pos)
+            rects[color] = Buoy(frame_corners, color)
     return rects
 
 def calculateCorners(center, height, width):

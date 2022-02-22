@@ -1,5 +1,7 @@
 import Constants
+
 def Buoy():
-    def __init__(self, corners, color):
+    def __init__(self, corners, center, color):
         self.corners = corners
         self.color = color
+        self.center = center
