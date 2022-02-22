@@ -10,18 +10,23 @@ def getBuoys(task: str, pos: list):
 def getBuoysAbs(task: str):
     with open('BuoyPositions.json') as f:
         buoys = json.load(f)
-    rects = [calculateCorners(buoy, Constants.BUOY_HEIGHT, Constants.BUOY_WIDTH) for buoy in buoys[task]]
+    
+    rects = []
+    for color in buoys[task]:
+        for buoy in buoys[task][color]:
+            rects.append(Buoy(calculateCorners(buoy['center'], buoy['height'], buoy['width']), color))
+
     return rects
 
-def absPosToFrame(buoys: list, pos: list):
-    rectangles = []
+def absPosToFrame(buoys: Buoy, pos: list):
+    rects = []
     for buoy in buoys:
         frame_corners = []
         for corner in buoy.corners:
             pixel_pos = [Constants.CAMERA_RATIO * (corner[0] - pos[0]), Constants.CAMERA_RATIO * (corner[2] - pos[2])]
             frame_corners.append(pixel_pos)
-        rectangles.append(Buoy(frame_corners))
-    return rectangles
+        rects.append(Buoy(frame_corners, buoy.color))
+    return rects
 
 def calculateCorners(center, height, width):
     # Y is constant from view.
