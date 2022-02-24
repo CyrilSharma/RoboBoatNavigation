@@ -1,11 +1,14 @@
 import utils
-import Boat
+from dronekit import Command
+from pymavlink import mavutil
+import Constants
 
-def navigateChannel(boat, buoyList):
-    closestBuoys = findClosestBuoys(buoyList)
+def navigateChannel(vehicle):
+    closestBuoys = findClosestBuoys(utils.getBuoysAbs('nav'))
     avgX = (closestBuoys['red'].position[0] + closestBuoys['green'].position[0]) / 2
-    # figure out more about waypoints
-    waypoint = [avgX, 0, 0]
+    # https://dronekit-python.readthedocs.io/en/latest/automodule.html#dronekit.Vehicle.commands
+    # TODO: this velocity needs to be normalized, otherwise speeds will be too high
+    utils.send_ned_velocity(vehicle, [(avgX - Constants.FRAME_WIDTH / 2) * Constants.VELOCITY_SCALE, 10, 0], 0)
 
 # find closest buoy with specific color
 def findClosestBuoys(buoyList):
