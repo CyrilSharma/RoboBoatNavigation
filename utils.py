@@ -1,12 +1,13 @@
 import math
 import json
 import Constants
-import Buoy
-from pymavlink import mavutil
+from Buoy import Buoy
+# from pymavlink import mavutil
 import time
 
 # https://dronekit-python.readthedocs.io/en/latest/guide/copter/guided_mode.html
 def send_ned_velocity(vehicle, velocity, duration):
+    pass
     """
     Move vehicle in direction based on specified velocity vectors.
     """
@@ -19,7 +20,6 @@ def send_ned_velocity(vehicle, velocity, duration):
         velocity[0], velocity[1], velocity[2], # x, y, z velocity in m/s
         0, 0, 0, # x, y, z acceleration (not supported yet, ignored in GCS_Mavlink)
         0, 0)    # yaw, yaw_rate (not supported yet, ignored in GCS_Mavlink)
-
     # send command to vehicle on 1 Hz cycle
     for _ in range(0, duration):
         vehicle.send_mavlink(msg)
@@ -31,8 +31,9 @@ def getBuoysAbs(task: str):
     
     rects = {}
     for color in buoys[task]:
+        rects[color] = []
         for buoy in buoys[task][color]:
-            rects[color] = (Buoy(calculateCorners(buoy['center'], buoy['height'], buoy['width']), buoy['center'], color))
+            rects[color].append(Buoy(calculateCorners(buoy, Constants.BUOY_HEIGHT, Constants.BUOY_WIDTH), buoy, color))
     return rects
 
 def getBuoys(task: str, pos):
@@ -55,8 +56,8 @@ def calculateCorners(center, height, width):
     # [X, Y, Z]
     # Y is constant from view.
     corners = []
-    corners[0] = [center[0] + width/2 + height/2, center[1], center[2] + width/2 - height/2]
-    corners[1] = [center[0] + width/2 - height/2, center[1], center[2] - width/2 - height/2]
-    corners[2] = [center[0] - width/2 + height/2, center[1], center[2] - width/2 - height/2]
-    corners[3] = [center[0] - width/2 - height/2, center[1], center[2] + width/2 - height/2]
+    corners.append([center[0] + width/2 + height/2, center[1], 0 + width/2 - height/2])
+    corners.append([center[0] + width/2 - height/2, center[1], 0 - width/2 - height/2])
+    corners.append([center[0] - width/2 + height/2, center[1], 0 - width/2 - height/2])
+    corners.append([center[0] - width/2 - height/2, center[1], 0 + width/2 - height/2])
     return corners
