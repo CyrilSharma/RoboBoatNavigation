@@ -1,4 +1,5 @@
 import tkinter
+import Constants
 import FrameConstants as FC
 import time
 import utils
@@ -16,7 +17,7 @@ class Visualizer():
         self.canvas = tkinter.Canvas(self.Window)
         self.canvas.configure(bg="Blue")
         self.canvas.pack(fill="both", expand=True)
-        self.boat = self.canvas.create_rectangle(50,50,60,100,fill="Red", outline="Red", width=4)
+        self.boat = self.canvas.create_rectangle(Constants.BOAT_START[0],Constants.BOAT_START[1],Constants.BOAT_START[0] + Constants.BOAT_SIZE[0],Constants.BOAT_START[1] + Constants.BOAT_SIZE[1],fill="Red", outline="Red", width=4)
     
     def makeBuoys(self, buoys):
         print(buoys)
@@ -25,7 +26,7 @@ class Visualizer():
             print(buoys[color])
             for buoy in buoys[color]:
                 print(buoy)
-                self.canvas.create_rectangle(buoy.corners[0][0], buoy.corners[0][1], buoy.corners[1][0], buoy.corners[1][1], fill=color, outline=color, width=4)
+                self.canvas.create_rectangle(buoy.corners[0][0], buoy.corners[0][1], buoy.corners[0][0] + Constants.BUOY_WIDTH, buoy.corners[0][1] + Constants.BUOY_HEIGHT, fill=color, outline=color, width=4)
     
     def animate(self, velocity):
         self.canvas.move(self.boat, velocity[0] * FC.Refresh_Sec, velocity[1] * FC.Refresh_Sec)
@@ -34,7 +35,7 @@ class Visualizer():
 def main():
     vis = Visualizer(utils.getBuoysAbs('NavChannelDemo'))
     while True:
-        vis.animate([10,10])
+        vis.animate([0,10])
         time.sleep(FC.Refresh_Sec)
 
 if __name__ == "__main__":
