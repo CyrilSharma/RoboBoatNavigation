@@ -4,7 +4,7 @@ from pymavlink import mavutil
 import Constants
 
 def navigateChannel(vehicle):
-    closestBuoys = findClosestBuoys(utils.getBuoysAbs('nav'))
+    closestBuoys = findClosestBuoys(utils.getBuoysAbs('NavChannelDemo'))
     avgX = (closestBuoys['red'].position[0] + closestBuoys['green'].position[0]) / 2
     # https://dronekit-python.readthedocs.io/en/latest/automodule.html#dronekit.Vehicle.commands
     # TODO: this velocity needs to be normalized, otherwise speeds will be too high

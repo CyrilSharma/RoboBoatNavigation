@@ -40,10 +40,10 @@ def getBuoysAbs(task: str):
 def findClosestBuoys(buoyList):
     closestBuoys = {}
     for color in buoyList:
-        minDist = 0
+        minDist = buoyList[color][0].center[1]
         for buoy in buoyList[color]:
-            if (buoy.center[2] < minDist):
-                minDist = buoy.center[2]
+            if (buoy.center[1] <= minDist):
+                minDist = buoy.center[1]
                 closestBuoys[color] = buoy
     return closestBuoys
 

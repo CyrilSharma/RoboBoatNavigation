@@ -20,12 +20,8 @@ class Visualizer():
         self.boat = self.canvas.create_rectangle(Constants.BOAT_START[0],Constants.BOAT_START[1],Constants.BOAT_START[0] + Constants.BOAT_SIZE[0],Constants.BOAT_START[1] + Constants.BOAT_SIZE[1],fill="Red", outline="Red", width=4)
     
     def makeBuoys(self, buoys):
-        print(buoys)
         for color in buoys:
-            print(color)
-            print(buoys[color])
             for buoy in buoys[color]:
-                print(buoy)
                 self.canvas.create_rectangle(buoy.corners[0][0], buoy.corners[0][1], buoy.corners[0][0] + Constants.BUOY_WIDTH, buoy.corners[0][1] + Constants.BUOY_HEIGHT, fill=color, outline=color, width=4)
     
     def animate(self, velocity):

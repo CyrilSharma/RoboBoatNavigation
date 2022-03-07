@@ -2,6 +2,7 @@ import utils
 from Visualize import Visualizer
 import time
 import Constants
+import FrameConstants as FC
 
 class SimulatedNavigator():
     def __init__(self, task):
@@ -11,14 +12,14 @@ class SimulatedNavigator():
     def initialize(self):
         # this will be filled in correctly later
         self.vehicle = "🤡"
-        self.visualizer = Visualizer(utils.getBuoysAbs(utils.getBuoysAbs(self.task)))
+        self.visualizer = Visualizer(utils.getBuoysAbs(self.task))
         self.initRunMethod()
 
     def run(self):
         while True:
             velocity = self.runMethod()
             self.visualizer.animate(velocity)
-            time.sleep(Constants.Refresh_Sec)
+            time.sleep(FC.Refresh_Sec)
     
     def initRunMethod(self):
         if self.task == 'NavChannelDemo':
@@ -28,7 +29,7 @@ class SimulatedNavigator():
 
     def navigateChannel(self):
         closestBuoys = utils.findClosestBuoys(utils.getBuoysAbs('NavChannelDemo'))
-        avgX = (closestBuoys['red'].position[0] + closestBuoys['green'].position[0]) / 2
+        avgX = (closestBuoys['Red'].center[0] + closestBuoys['Green'].center[0]) / 2
         # https://dronekit-python.readthedocs.io/en/latest/automodule.html#dronekit.Vehicle.commands
         # TODO: this velocity needs to be normalized, otherwise speeds will be too high
         # utils.send_ned_velocity(self.vehicle, [(avgX - Constants.FRAME_WIDTH / 2) * Constants.VELOCITY_SCALE, 10, 0], 0)
