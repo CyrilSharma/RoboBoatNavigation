@@ -32,11 +32,11 @@ class Visualizer():
         self.canvas.move(self.boat, velocity[0] * FC.Refresh_Sec, velocity[1] * FC.Refresh_Sec)
         self.Window.update()
  
-def main():
+def test():
     vis = Visualizer(utils.getBuoysAbs('NavChannelDemo'))
     while True:
         vis.animate([0,10])
         time.sleep(FC.Refresh_Sec)
 
 if __name__ == "__main__":
-    main()
+    test()

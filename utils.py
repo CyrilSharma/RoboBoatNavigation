@@ -36,6 +36,17 @@ def getBuoysAbs(task: str):
             rects[color].append(Buoy(calculateCorners(buoy, Constants.BUOY_HEIGHT, Constants.BUOY_WIDTH), buoy, color))
     return rects
 
+# find closest buoy with specific color
+def findClosestBuoys(buoyList):
+    closestBuoys = {}
+    for color in buoyList:
+        minDist = 0
+        for buoy in buoyList[color]:
+            if (buoy.center[2] < minDist):
+                minDist = buoy.center[2]
+                closestBuoys[color] = buoy
+    return closestBuoys
+
 def getBuoys(task: str, pos):
     buoys = getBuoysAbs(task)
     return absPosToFrame(buoys, pos)
