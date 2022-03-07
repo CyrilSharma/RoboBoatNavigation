@@ -52,15 +52,15 @@ def getBuoys(task: str, pos):
     return absPosToFrame(buoys, pos)
 
 # TODO: this doesn't do the projection quite right...
-def absPosToFrame(buoys: Buoy, pos):
+def absPosToFrame(buoys, pos):
     rects = {}
     for color in buoys:
-        for buoy in buoys:
+        for buoy in buoys[color]:
             frame_corners = []
             for corner in buoy.corners:
                 pixel_pos = [Constants.FRAME_OFFSET * (corner[0] - pos[0]), Constants.FRAME_OFFSET * (corner[2] - pos[2])]
                 frame_corners.append(pixel_pos)
-            rects[color] = Buoy(frame_corners, color)
+            rects[color] = Buoy(frame_corners, buoy.center, color)
     return rects
 
 def calculateCorners(center, height, width):
