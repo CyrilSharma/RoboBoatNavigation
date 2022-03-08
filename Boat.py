@@ -13,8 +13,6 @@ class Boat():
     
     # remake system so that it moves in direction of orientation
     def update(self, accl, dt):
-        if accl[0] == 0 and accl[1] == 0:
-            return [0, 0]
         self.theta += accl[1] * dt
         self.vx += accl[0] * dt
         self.vy += accl[1] * dt

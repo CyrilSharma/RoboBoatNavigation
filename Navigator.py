@@ -30,7 +30,6 @@ class SimulatedNavigator():
                 block = False
             if playing:
                 accl = self.runMethod()
-                print(accl)
                 update = self.boat.update(accl, FC.Refresh_Sec)
                 self.visualizer.animate(update)
                 self.cvisualizer.update(utils.absPosToFrame(self.buoys, self.boat))
@@ -43,14 +42,10 @@ class SimulatedNavigator():
             raise Exception("Invalid task")
 
     def navigateChannel(self):
-        willdeletelater = utils.absPosToFrame(self.buoys, self.boat)
-        print(willdeletelater)
         closestBuoys = utils.findClosestBuoys(utils.absPosToFrame(self.buoys, self.boat))
-        print(closestBuoys)
         if closestBuoys is None:
             return [0, 0]
         elif 'Red' not in closestBuoys or 'Green' not in closestBuoys:
             return [0, 0]
         avgX = (closestBuoys['Red'].x + closestBuoys['Green'].x) / 2
-        print(f"avgX: {avgX - FC.Window_Width}")
         return [1,(avgX - FC.Window_Width / 2) * Constants.VELOCITY_SCALE]
