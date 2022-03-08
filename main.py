@@ -1,7 +1,10 @@
 from Navigator import SimulatedNavigator
 
 def main():
-    navigator = SimulatedNavigator('NavChannelDemo')
+    params = {
+        'boatInit': [400, 20]
+    }
+    navigator = SimulatedNavigator('NavChannelDemo', **params)
     navigator.run()
 
 main()

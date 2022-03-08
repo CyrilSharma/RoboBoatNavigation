@@ -1,31 +1,27 @@
 import tkinter
-import Constants
 import FrameConstants as FC
 import time
 import utils
 
 class Visualizer():
-    def __init__(self, buoys):
-        self.initialize()
-        self.makeBuoys(buoys)
-        pass
+    def __init__(self, boat, buoys):
+        self.initialize(buoys, boat)
 
-    def initialize(self):
+    def initialize(self, buoys, boat):
         self.Window = tkinter.Tk()
-        self.Window.title("Python Guides")
         self.Window.geometry(f'{FC.Window_Width}x{FC.Window_Height}')
         self.canvas = tkinter.Canvas(self.Window)
         self.canvas.configure(bg="Blue")
         self.canvas.pack(fill="both", expand=True)
-        self.boat = self.canvas.create_rectangle(Constants.BOAT_START[0],Constants.BOAT_START[1],Constants.BOAT_START[0] + Constants.BOAT_SIZE[0],Constants.BOAT_START[1] + Constants.BOAT_SIZE[1],fill="Red", outline="Red", width=4)
+        self.makeBuoys(buoys)
+        self.boat = self.canvas.create_rectangle(boat.x - boat.width / 2, boat.y - boat.width / 2, boat.x + boat.width / 2, boat.y + boat.width / 2, fill=boat.color)
     
     def makeBuoys(self, buoys):
-        for color in buoys:
-            for buoy in buoys[color]:
-                self.canvas.create_rectangle(buoy.corners[0][0], buoy.corners[0][1], buoy.corners[0][0] + Constants.BUOY_WIDTH, buoy.corners[0][1] + Constants.BUOY_HEIGHT, fill=color, outline=color, width=4)
+        for buoy in buoys:
+            self.canvas.create_rectangle(buoy.x - buoy.width / 2, buoy.y - buoy.width / 2, buoy.x + buoy.width / 2, buoy.y + buoy.width / 2, fill=buoy.color)
     
-    def animate(self, velocity):
-        self.canvas.move(self.boat, velocity[0] * FC.Refresh_Sec, velocity[1] * FC.Refresh_Sec)
+    def animate(self, update):
+        self.canvas.move(self.boat, update[0], update[1])
         self.Window.update()
  
 def test():
