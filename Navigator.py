@@ -21,6 +21,7 @@ class SimulatedNavigator():
         while True:
             velocity = self.runMethod()
             update = self.boat.update(velocity, FC.Refresh_Sec)
+            self.boat.theta += 0.01
             self.visualizer.animate(update)
             self.cvisualizer.update(utils.absPosToFrame(self.buoys, self.boat))
             time.sleep(FC.Refresh_Sec)
@@ -34,6 +35,8 @@ class SimulatedNavigator():
     def navigateChannel(self):
         closestBuoys = utils.findClosestBuoys(utils.absPosToFrame(self.buoys, self.boat))
         if closestBuoys is None:
+            return [0, 0]
+        elif 'Red' not in closestBuoys or 'Green' not in closestBuoys:
             return [0, 0]
         avgX = (closestBuoys['Red'].x + closestBuoys['Green'].x) / 2
         return [(avgX - Constants.FRAME_WIDTH / 2) * Constants.VELOCITY_SCALE, 10]

@@ -4,6 +4,13 @@ class Buoy():
         self.x = center[0]
         self.y = center[1]
         self.color = color
-        self.width = Constants.BUOY_WIDTH
-        self.height = Constants.BUOY_HEIGHT
+        if width is None:
+            self.width = Constants.BUOY_WIDTH
+        else:
+            self.width = width
+        
+        if height is None:
+            self.height = Constants.BUOY_HEIGHT
+        else:
+            self.height = height
         self.corners = corners

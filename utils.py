@@ -1,6 +1,7 @@
 import math
 import json
 import Constants
+import FrameConstants as FC
 from Buoy import Buoy
 from pymavlink import mavutil
 import time
@@ -19,7 +20,7 @@ def findClosestBuoys(buoyList):
     # buoys that appear the largest, are the closest
     if len(buoyList) < 1:
         return None
-        
+
     closestBuoys = []
     maxArea = buoyList[0].width * buoyList[0].height
     for buoy in buoyList:
@@ -47,9 +48,11 @@ def absPosToFrame(buoyList, boat):
         dist = math.sqrt(dx**2 + dy**2)
         dx2 = dist * math.sin(dTheta)
         dy2 = dist * math.cos(dTheta)
-        scale = 10 / dy2
-        center = [dx2 * scale, scale * buoy.height / 2]
+        scale = FC.Window_Width / dy2
+        center = [FC.Window_Width / 2 + dx2 * scale, scale * buoy.height / 2]
         buoys.append(Buoy(center, buoy.color, width=buoy.width*scale, height=buoy.height*scale, corners=calculateCorners(center, buoy.height * scale, buoy.width * scale)))
+    print(buoys)
+    print(boat.theta)
     return buoys
 
 def calculateCorners(center, height, width):
