@@ -19,9 +19,10 @@ class SimulatedNavigator():
 
     def run(self):
         while True:
-            velocity = self.runMethod()
-            update = self.boat.update(velocity, FC.Refresh_Sec)
-            self.boat.theta += 0.01
+            # velocity = self.runMethod()
+            # update = self.boat.update(velocity, FC.Refresh_Sec)
+            update = [0,0]
+            self.boat.theta += 0.015
             self.visualizer.animate(update)
             self.cvisualizer.update(utils.absPosToFrame(self.buoys, self.boat))
             time.sleep(FC.Refresh_Sec)

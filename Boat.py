@@ -1,7 +1,7 @@
 import math
 
 class Boat():
-    def __init__(self, position=[0,0], theta=math.pi):
+    def __init__(self, position=[0,0], theta=math.pi/2):
         self.x = position[0]
         self.y = position[1]
         self.theta = theta
