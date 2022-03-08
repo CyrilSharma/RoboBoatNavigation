@@ -4,6 +4,7 @@ from Visualize import TopDownVisualizer, CameraVisualizer
 import time
 import Constants
 import FrameConstants as FC
+import keyboard
 
 class SimulatedNavigator():
     def __init__(self, task, **kwargs):
@@ -18,14 +19,22 @@ class SimulatedNavigator():
         self.initRunMethod()
 
     def run(self):
+        block = False
+        playing = True
         while True:
-            # velocity = self.runMethod()
-            # update = self.boat.update(velocity, FC.Refresh_Sec)
-            update = [0,0]
-            self.boat.theta += 0.015
-            self.visualizer.animate(update)
-            self.cvisualizer.update(utils.absPosToFrame(self.buoys, self.boat))
-            time.sleep(FC.Refresh_Sec)
+            if keyboard.is_pressed(' '):
+                if block == False:
+                    playing = not playing
+                    block = True
+            else:
+                block = False
+            if playing:
+                accl = self.runMethod()
+                print(accl)
+                update = self.boat.update(accl, FC.Refresh_Sec)
+                self.visualizer.animate(update)
+                self.cvisualizer.update(utils.absPosToFrame(self.buoys, self.boat))
+                time.sleep(FC.Refresh_Sec)
     
     def initRunMethod(self):
         if self.task == 'NavChannelDemo':
@@ -34,10 +43,14 @@ class SimulatedNavigator():
             raise Exception("Invalid task")
 
     def navigateChannel(self):
+        willdeletelater = utils.absPosToFrame(self.buoys, self.boat)
+        print(willdeletelater)
         closestBuoys = utils.findClosestBuoys(utils.absPosToFrame(self.buoys, self.boat))
+        print(closestBuoys)
         if closestBuoys is None:
             return [0, 0]
         elif 'Red' not in closestBuoys or 'Green' not in closestBuoys:
             return [0, 0]
         avgX = (closestBuoys['Red'].x + closestBuoys['Green'].x) / 2
-        return [(avgX - Constants.FRAME_WIDTH / 2) * Constants.VELOCITY_SCALE, 10]
+        print(f"avgX: {avgX - FC.Window_Width}")
+        return [1,(avgX - FC.Window_Width / 2) * Constants.VELOCITY_SCALE]

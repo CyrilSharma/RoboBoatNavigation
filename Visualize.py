@@ -35,7 +35,7 @@ class CameraVisualizer(Visualizer):
     
     def makeBuoys(self, buoys):
         for buoy in buoys:
-            self.canvas.create_rectangle(buoy.x - buoy.width / 2, buoy.y - buoy.width / 2, buoy.x + buoy.width / 2, buoy.y + buoy.width / 2, fill=buoy.color)
+            self.canvas.create_rectangle(buoy.x - buoy.width / 2, FC.Window_Height - (buoy.y - buoy.height / 2), buoy.x + buoy.width / 2, FC.Window_Height - (buoy.y + buoy.height / 2), fill=buoy.color)
     
     def update(self, buoys):
         self.canvas.delete('all')

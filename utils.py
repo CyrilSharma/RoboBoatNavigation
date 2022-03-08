@@ -22,12 +22,17 @@ def findClosestBuoys(buoyList):
         return None
 
     closestBuoys = []
-    maxArea = buoyList[0].width * buoyList[0].height
+    maxAreas = [-1,-1]
     for buoy in buoyList:
         area = buoy.width * buoy.height
-        if (area >= maxArea):
-            maxArea = area
-            closestBuoys.append(buoy)
+        if buoy.color == 'Red':
+            if area > maxAreas[0]:
+                maxAreas[0] = area
+                closestBuoys.append(buoy)
+        elif buoy.color == 'Green':
+            if area > maxAreas[1]:
+                maxAreas[1] = area
+                closestBuoys.append(buoy)
         
     buoys = {}
     for buoy in closestBuoys:
@@ -43,16 +48,20 @@ def absPosToFrame(buoyList, boat):
         buoyTheta = math.atan2(dy, dx)
         dTheta = buoyTheta - boat.theta
         dTheta = (dTheta + math.pi) % (2 * math.pi) - math.pi
-        if (dTheta < -math.pi / 3 or dTheta > math.pi / 3):
+        cutoffAngle = math.pi / 2.5
+        print(f"dTheta: {dTheta * 180 / math.pi}")
+        if (dTheta < -cutoffAngle or dTheta > cutoffAngle):
             continue
         dist = math.sqrt(dx**2 + dy**2)
         dx2 = dist * math.sin(dTheta)
         dy2 = dist * math.cos(dTheta)
-        scale = FC.Window_Width / dy2
-        center = [FC.Window_Width / 2 + dx2 * scale, scale * buoy.height / 2]
-        buoys.append(Buoy(center, buoy.color, width=buoy.width*scale, height=buoy.height*scale, corners=calculateCorners(center, buoy.height * scale, buoy.width * scale)))
-    print(buoys)
-    print(boat.theta)
+        frameWidth = FC.Window_Width
+        frameOffset = frameWidth*0.5 / math.tan(cutoffAngle)
+        scale = frameOffset / dy2
+        center = [frameWidth / 2 + dx2 * scale, buoy.height*scale/2]
+        buoys.append(Buoy(center, buoy.color, width=buoy.width*scale, height=buoy.height*scale))
+    # print(buoys)
+    # print(boat.theta)
     return buoys
 
 def calculateCorners(center, height, width):
