@@ -1,6 +1,6 @@
 import utils
 from Boat import Boat
-from Visualize import Visualizer
+from Visualize import TopDownVisualizer, CameraVisualizer
 import time
 import Constants
 import FrameConstants as FC
@@ -12,7 +12,8 @@ class SimulatedNavigator():
 
     def initialize(self, kwargs):
         self.boat = Boat(kwargs.get('boatInit', [0, 0]))
-        self.visualizer = Visualizer(self.boat, utils.getBuoysAbs(self.task))
+        self.visualizer = TopDownVisualizer(self.boat, utils.getBuoysAbs(self.task))
+        self.cvisualizer = CameraVisualizer(utils.absPosToFrame(utils.getBuoysAbs(self.task), self.boat))
         self.buoys = utils.getBuoysAbs(self.task)
         self.initRunMethod()
 
@@ -21,6 +22,7 @@ class SimulatedNavigator():
             velocity = self.runMethod()
             update = self.boat.update(velocity, FC.Refresh_Sec)
             self.visualizer.animate(update)
+            self.cvisualizer.update(utils.absPosToFrame(self.buoys, self.boat))
             time.sleep(FC.Refresh_Sec)
     
     def initRunMethod(self):
