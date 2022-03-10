@@ -29,11 +29,14 @@ class SimulatedNavigator():
 
         while True:
             if playing:
-                accl = self.runMethod()
-                update = self.boat.update(accl, FC.Refresh_Sec)
-                self.visualizer.animate(update)
-                self.cvisualizer.update(utils.absPosToFrame(self.buoys, self.boat), self.boat)
-                time.sleep(FC.Refresh_Sec)
+                try: 
+                    accl = self.runMethod()
+                    update = self.boat.update(accl, FC.Refresh_Sec)
+                    self.visualizer.animate(update)
+                    self.cvisualizer.update(utils.absPosToFrame(self.buoys, self.boat), self.boat)
+                    time.sleep(FC.Refresh_Sec)
+                except Exception as e:
+                    break
     
     def initRunMethod(self, task):
         if task.lower() == 'navchanneldemo':

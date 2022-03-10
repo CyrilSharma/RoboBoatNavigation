@@ -21,8 +21,11 @@ class TopDownVisualizer(Visualizer):
             self.canvas.create_rectangle(buoy.x - buoy.width / 2, buoy.y - buoy.width / 2, buoy.x + buoy.width / 2, buoy.y + buoy.width / 2, fill=buoy.color)
     
     def animate(self, update):
-        self.canvas.move(self.boat, update[0], update[1])
-        self.Window.update()
+        if (self.Window.state() == 'normal'):
+            self.canvas.move(self.boat, update[0], update[1])
+            self.Window.update()
+        else:
+            return Exception("Window is not open")
 
 class CameraVisualizer(Visualizer):
     def __init__(self):
@@ -35,6 +38,9 @@ class CameraVisualizer(Visualizer):
             self.canvas.create_rectangle(pix.x - pix.width / 2, FC.Window_Height - (pix.y - pix.height / 2), pix.x + pix.width / 2, FC.Window_Height - (pix.y + pix.height / 2), fill=buoy.color)
     
     def update(self, buoys, boat):
-        self.canvas.delete('all')
-        self.makeBuoys(buoys, boat)
-        self.Window.update()
+        if (self.Window.state() == 'normal'):
+            self.canvas.delete("all")
+            self.makeBuoys(buoys, boat)
+            self.Window.update()
+        else:
+            return Exception("Window is not open")
