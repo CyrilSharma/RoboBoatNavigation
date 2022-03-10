@@ -21,6 +21,6 @@ def parseArguments():
         config = generateBuoys(args.task, args.seed)
     else:
         config = utils.loadConfig(args.task)
-    return generateBuoys(args.task, args.randomBuoys, args.seed)
+    return config
 
 main()
