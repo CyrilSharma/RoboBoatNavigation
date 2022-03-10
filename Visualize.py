@@ -1,7 +1,5 @@
 import tkinter
 import FrameConstants as FC
-import time
-import utils
 
 class Visualizer():
     def __init__(self):

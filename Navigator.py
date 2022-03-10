@@ -5,7 +5,6 @@ import time
 import Constants
 import FrameConstants as FC
 from pynput import keyboard
-
 class SimulatedNavigator():
     def __init__(self, task, **kwargs):
         self.task = task
@@ -59,4 +58,4 @@ class SimulatedNavigator():
         elif 'Red' not in closestBuoys or 'Green' not in closestBuoys:
             return [0, 0]
         avgX = (closestBuoys['Red'].x + closestBuoys['Green'].x) / 2
-        return [1,(avgX - FC.Window_Width / 2) * Constants.VELOCITY_SCALE]
+        return [1.5,(avgX - FC.Window_Width / 2) * Constants.VELOCITY_SCALE]
