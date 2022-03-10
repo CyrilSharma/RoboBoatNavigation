@@ -4,7 +4,7 @@ from Visualize import TopDownVisualizer, CameraVisualizer
 import time
 import Constants
 import FrameConstants as FC
-import keyboard
+from pynput import keyboard
 
 class SimulatedNavigator():
     def __init__(self, task, **kwargs):
@@ -20,14 +20,25 @@ class SimulatedNavigator():
 
     def run(self):
         block = False
+        global playing
         playing = True
+
+        def on_press(key):
+            if key == keyboard.Key.space:
+                global playing
+                playing = not playing
+                block = False
+
+        listener = keyboard.Listener(on_press=on_press)
+        listener.start()
+
         while True:
-            if keyboard.is_pressed(' '):
+            '''if keyboard.is_pressed(' '):
                 if block == False:
                     playing = not playing
                     block = True
             else:
-                block = False
+                block = False'''
             if playing:
                 accl = self.runMethod()
                 update = self.boat.update(accl, FC.Refresh_Sec)

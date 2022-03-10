@@ -6,6 +6,7 @@ import utils
 class Visualizer():
     def __init__(self):
         self.Window = tkinter.Tk()
+        self.Window.bind('<Escape>', lambda e: self.Window.destroy())
         self.Window.geometry(f'{FC.Window_Width}x{FC.Window_Height}')
         self.canvas = tkinter.Canvas(self.Window)
         self.canvas.configure(bg="Blue")
