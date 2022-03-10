@@ -28,12 +28,6 @@ class SimulatedNavigator():
         listener.start()
 
         while True:
-            '''if keyboard.is_pressed(' '):
-                if block == False:
-                    playing = not playing
-                    block = True
-            else:
-                block = False'''
             if playing:
                 accl = self.runMethod()
                 update = self.boat.update(accl, FC.Refresh_Sec)

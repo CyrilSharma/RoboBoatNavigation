@@ -1,7 +1,7 @@
 {
     "NavChannelDemo": {
         "Boat": {
-            "Position": [0,0],
+            "Position": [400,20],
             "Theta": 1.57079632679
         },
         "Red": [[415,70], [415,90]],
