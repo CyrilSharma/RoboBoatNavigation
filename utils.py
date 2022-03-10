@@ -1,16 +1,27 @@
 import math
 import json
+import Config
 import Constants
 import FrameConstants as FC
 from Buoy import Buoy
 from pymavlink import mavutil
 import time
 
+def loadConfig(task: str):
+    with open('Config.json') as f:
+        data = json.load(f)
+        boatPos = data[task]['Boat']['Position']
+        boatTheta = data[task]['Boat']['Theta']
+        buoys = getBuoysAbs(task)
+    return Config(boatPos, boatTheta, buoys)
+
 def getBuoysAbs(task: str):
     buoys = []
     with open('BuoyPositions.json') as f:
         data = json.load(f)
         for color in data[task]:
+            if (color == 'Boat'):
+                continue
             for pos in data[task][color]:
                 buoys.append(Buoy(pos, color))
     return buoys

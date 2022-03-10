@@ -4,11 +4,8 @@ from Navigator import SimulatedNavigator
 import utils
 
 def main():
-    params = {
-        'boatInit': [380, 20]
-    }
-
-    navigator = SimulatedNavigator('NavChannelDemo', **params)
+    config = parseArguments()
+    navigator = SimulatedNavigator(config)
     navigator.run()
 
 def parseArguments():
@@ -20,6 +17,10 @@ def parseArguments():
     parser.add_argument('--seed', type=int, required=False)
     # Parse the argument
     args = parser.parse_args()
+    if (args.randomBuoys):
+        config = generateBuoys(args.task, args.seed)
+    else:
+        config = utils.loadConfig(args.task)
     return generateBuoys(args.task, args.randomBuoys, args.seed)
 
 main()
