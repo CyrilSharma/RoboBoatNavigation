@@ -10,7 +10,7 @@ class SimulatedNavigator():
         self.buoys = config.buoys
         self.boat = Boat(config.boatPos, config.boatTheta)
         self.visualizer = TopDownVisualizer(self.boat, self.buoys)
-        self.cvisualizer = CameraVisualizer(utils.absPosToFrame(self.buoys, self.boat))
+        self.cvisualizer = CameraVisualizer(utils.absPosToFrame(self.buoys, self.boat), self.boat)
         self.initRunMethod(config.task)
 
     def run(self):
@@ -32,11 +32,13 @@ class SimulatedNavigator():
                 accl = self.runMethod()
                 update = self.boat.update(accl, FC.Refresh_Sec)
                 self.visualizer.animate(update)
-                self.cvisualizer.update(utils.absPosToFrame(self.buoys, self.boat))
+                self.cvisualizer.update(utils.absPosToFrame(self.buoys, self.boat), self.boat)
                 time.sleep(FC.Refresh_Sec)
     
     def initRunMethod(self, task):
-        if task == 'NavChannelDemo':
+        if task.lower() == 'navchanneldemo':
+            self.runMethod = self.navigateChannel
+        elif task.lower() == 'avoidcrowds':
             self.runMethod = self.navigateChannel
         else:
             raise Exception("Invalid task")

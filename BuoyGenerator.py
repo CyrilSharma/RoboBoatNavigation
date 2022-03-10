@@ -1,4 +1,5 @@
 import random
+from Buoy import Buoy
 from SimConfig import Config
 import FrameConstants as FC
 import Constants as C
@@ -43,19 +44,16 @@ def generateAvoidCrowds(task, seed: int = None):
 
     for i in range(numBuoys):
         integral += random.randint(0, 1) * fluctuationSize
-        xpositions.append(centerX - offset + integral // 1)
+        xpositions.append(int(centerX - offset + integral))
 
+    buoys = []
     for i in range(numBuoys):
-        buoys = {}
-        buoys['Red'] = []
-        buoys['Green'] = []
-
         y = 50
         for x in xpositions:
-            buoys['Red'].append([x, y + random.randint(-3, 3)])
-            buoys['Green'].append([x + 2 * offset, y + random.randint(-3, 3)])
+            buoys.append(Buoy([x, y + random.randint(-3, 3)], 'Green'))
+            buoys.append(Buoy([x + 2 * offset, y + random.randint(-3, 3)], 'Red'))
             y += 20
-    
+            
     boatPosition = [FC.Window_Width / 2, 20]
     boatTheta = math.pi / 2
     return Config(task, boatPosition, boatTheta, buoys)

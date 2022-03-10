@@ -28,15 +28,16 @@ class TopDownVisualizer(Visualizer):
         self.Window.update()
 
 class CameraVisualizer(Visualizer):
-    def __init__(self, buoys):
+    def __init__(self, buoys, boat):
         super().__init__()
-        self.makeBuoys(buoys)
+        self.makeBuoys(buoys, boat)
     
-    def makeBuoys(self, buoys):
-        for buoy in buoys:
+    def makeBuoys(self, buoys, boat):
+        sortedBuoys = sorted(buoys, key=lambda buoy: (buoy.x - boat.x) ** 2 + (buoy.y - boat.y) ** 2)
+        for buoy in sortedBuoys:
             self.canvas.create_rectangle(buoy.x - buoy.width / 2, FC.Window_Height - (buoy.y - buoy.height / 2), buoy.x + buoy.width / 2, FC.Window_Height - (buoy.y + buoy.height / 2), fill=buoy.color)
     
-    def update(self, buoys):
+    def update(self, buoys, boat):
         self.canvas.delete('all')
-        self.makeBuoys(buoys)
+        self.makeBuoys(buoys, boat)
         self.Window.update()
