@@ -1,5 +1,5 @@
 import argparse
-from Config import Config
+from BuoyGenerator import generateBuoys
 from Navigator import SimulatedNavigator
 import utils
 
@@ -20,6 +20,6 @@ def parseArguments():
     parser.add_argument('--seed', type=int, required=False)
     # Parse the argument
     args = parser.parse_args()
-    return 
+    return generateBuoys(args.task, args.randomBuoys, args.seed)
 
 main()

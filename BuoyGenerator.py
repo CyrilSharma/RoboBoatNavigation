@@ -1,15 +1,22 @@
 import random
+from Config import Config
 import FrameConstants as FC
 import Constants as C
+import math
 
 def generateBuoys(task: str, seed: int = None):
     if task.lower() == 'navchanneldemo':
-        buoys = generateNavigationBuoys(seed)
+        config = generateNavigation(seed)
+    elif task.lower() == 'avoidcrowds':
+        config = generateAvoidCrowds(seed)
     else:
         raise Exception("Invalid task")
-    return buoys
+    return config
 
-def generateAvoidCrowdsBuoys(seed: int = None):
+def generateNavigation(seed):
+    pass
+
+def generateAvoidCrowds(seed: int = None):
     if seed is not None:
         random.seed(seed)
 
@@ -22,19 +29,19 @@ def generateAvoidCrowdsBuoys(seed: int = None):
 
     for i in range(numBuoys):
         integral += random.randint(0, 1) * fluctuationSize
-        xpositions.append(centerX - offset + integral)
+        xpositions.append(centerX - offset + integral // 1)
 
     for i in range(numBuoys):
         buoys = {}
         buoys['Red'] = []
         buoys['Green'] = []
-        for x in xpositions:
-            buoys['Red'].append(Buoy())
-            buoys['Green'].append(Buoy())))
-        centerX + xpositions[i]
-        buoy['y'] = random.randint(0, FC.Window_Height)
-        buoy['color'] = 'Red' if i % 2 == 0 else 'Green'
-        buoy['id'] = i
-        buoys[i] = buoy
 
-    return buoys
+        y = 50
+        for x in xpositions:
+            buoys['Red'].append([x, y + random.randint(-3, 3)])
+            buoys['Green'].append([x + 2 * offset, y + random.randint(-3, 3)])
+            y += 20
+    
+    boatPosition = [FC.Window_Width / 2, 20]
+    boatTheta = math.pi / 2
+    return Config(boatPosition, boatTheta, buoys)
