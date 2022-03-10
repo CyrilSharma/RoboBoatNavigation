@@ -11,13 +11,10 @@ class Visualizer():
         self.canvas.pack(fill="both", expand=True)
 
 class TopDownVisualizer(Visualizer):
-    def __init__(self, boat, buoys):
+    def __init__(self, bouys, boat):
         super().__init__()
-        self.initialize(buoys, boat)
-
-    def initialize(self, buoys, boat):
-        self.makeBuoys(buoys)
         self.boat = self.canvas.create_rectangle(boat.x - boat.width / 2, boat.y - boat.width / 2, boat.x + boat.width / 2, boat.y + boat.width / 2, fill=boat.color)
+        self.makeBuoys(bouys)
     
     def makeBuoys(self, buoys):
         for buoy in buoys:
@@ -28,14 +25,14 @@ class TopDownVisualizer(Visualizer):
         self.Window.update()
 
 class CameraVisualizer(Visualizer):
-    def __init__(self, buoys, boat):
+    def __init__(self):
         super().__init__()
-        self.makeBuoys(buoys, boat)
     
     def makeBuoys(self, buoys, boat):
         sortedBuoys = sorted(buoys, key=lambda buoy: (buoy.x - boat.x) ** 2 + (buoy.y - boat.y) ** 2, reverse=True)
         for buoy in sortedBuoys:
-            self.canvas.create_rectangle(buoy.x - buoy.width / 2, FC.Window_Height - (buoy.y - buoy.height / 2), buoy.x + buoy.width / 2, FC.Window_Height - (buoy.y + buoy.height / 2), fill=buoy.color)
+            pix = buoy.pixelData
+            self.canvas.create_rectangle(pix.x - pix.width / 2, FC.Window_Height - (pix.y - pix.height / 2), pix.x + pix.width / 2, FC.Window_Height - (pix.y + pix.height / 2), fill=buoy.color)
     
     def update(self, buoys, boat):
         self.canvas.delete('all')

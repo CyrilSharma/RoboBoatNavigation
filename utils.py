@@ -30,7 +30,7 @@ def findClosestBuoys(buoyList):
     closestBuoys = []
     maxAreas = [-1,-1]
     for buoy in buoyList:
-        area = buoy.width * buoy.height
+        area = buoy.pixelData.width * buoy.pixelData.height
         if buoy.color == 'Red':
             if area > maxAreas[0]:
                 maxAreas[0] = area
@@ -47,14 +47,14 @@ def findClosestBuoys(buoyList):
     return buoys
 
 def absPosToFrame(buoyList, boat):
-    buoys = []
+    updatedList = []
     for buoy in buoyList:
         dx = buoy.x - boat.x
         dy = buoy.y - boat.y
         buoyTheta = math.atan2(dy, dx)
         dTheta = buoyTheta - boat.theta
         dTheta = (dTheta + math.pi) % (2 * math.pi) - math.pi
-        cutoffAngle = math.pi / 2.5
+        cutoffAngle = math.pi / 3
         if (dTheta < -cutoffAngle or dTheta > cutoffAngle):
             continue
         dist = math.sqrt(dx**2 + dy**2)
@@ -64,20 +64,9 @@ def absPosToFrame(buoyList, boat):
         frameOffset = frameWidth*0.5 / math.tan(cutoffAngle)
         scale = frameOffset / dy2
         center = [frameWidth / 2 + dx2 * scale, buoy.height*scale/2]
-        buoys.append(Buoy(center, buoy.color, width=buoy.width*scale, height=buoy.height*scale))
-    # print(buoys)
-    # print(boat.theta)
-    return buoys
-
-def calculateCorners(center, height, width):
-    # [X, Y, Z]
-    # Y is constant from view.
-    corners = []
-    corners.append([center[0] + width/2, center[1] + height/2])
-    corners.append([center[0] - width/2, center[1] + height/2])
-    corners.append([center[0] + width/2, center[1] - height/2])
-    corners.append([center[0] - width/2, center[1] - height/2])
-    return corners
+        buoy.updatePixelData(center, buoy.width*scale, buoy.height*scale)
+        updatedList.append(buoy)
+    return updatedList
 
 # https://dronekit-python.readthedocs.io/en/latest/guide/copter/guided_mode.html
 def send_ned_velocity(vehicle, velocity, duration):

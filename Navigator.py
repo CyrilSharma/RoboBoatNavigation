@@ -7,10 +7,10 @@ import FrameConstants as FC
 from pynput import keyboard
 class SimulatedNavigator():
     def __init__(self, config):
-        self.buoys = config.buoys
         self.boat = Boat(config.boatPos, config.boatTheta)
-        self.visualizer = TopDownVisualizer(self.boat, self.buoys)
-        self.cvisualizer = CameraVisualizer(utils.absPosToFrame(self.buoys, self.boat), self.boat)
+        self.buoys = utils.absPosToFrame(config.buoys, self.boat)
+        self.visualizer = TopDownVisualizer(self.buoys, self.boat)
+        self.cvisualizer = CameraVisualizer()
         self.initRunMethod(config.task)
 
     def run(self):
@@ -49,5 +49,5 @@ class SimulatedNavigator():
             return [0, 0]
         elif 'Red' not in closestBuoys or 'Green' not in closestBuoys:
             return [0, 0]
-        avgX = (closestBuoys['Red'].x + closestBuoys['Green'].x) / 2
+        avgX = (closestBuoys['Red'].pixelData.x + closestBuoys['Green'].pixelData.x) / 2
         return [1.5,(avgX - FC.Window_Width / 2) * Constants.VELOCITY_SCALE]
