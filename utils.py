@@ -10,21 +10,16 @@ import time
 def loadConfig(task: str):
     with open('BuoyPositions.json') as f:
         data = json.load(f)
+        task = task.lower()
         boatPos = data[task]['Boat']['Position']
         boatTheta = data[task]['Boat']['Theta']
-        buoys = getBuoysAbs(task)
-    return Config(task, boatPos, boatTheta, buoys)
-
-def getBuoysAbs(task: str):
-    buoys = []
-    with open('BuoyPositions.json') as f:
-        data = json.load(f)
-        for color in data[task]:
+        buoys = []
+        for color in data[task.lower()]:
             if (color == 'Boat'):
                 continue
             for pos in data[task][color]:
                 buoys.append(Buoy(pos, color))
-    return buoys
+    return Config(task, boatPos, boatTheta, buoys)
 
 # find closest buoy with specific color
 def findClosestBuoys(buoyList):

@@ -1,5 +1,5 @@
 {
-    "NavChannelDemo": {
+    "navchanneldemo": {
         "Boat": {
             "Position": [400,20],
             "Theta": 1.57079632679
@@ -7,12 +7,12 @@
         "Red": [[415,70], [415,90]],
         "Green": [[400,70], [400, 90]]
     },
-    "SnackRun": {
+    "snackrun": {
         "Red": [[0,0], [1,1]],
         "Green": [[0,0], [1,1]],
         "Blue": [[0,0], [1,1]]
     },
-    "AvoidCrowds": {
+    "avoidcrowds": {
         "Red": [[0,0], [1,1]],
         "Green": [[0,0], [1,1]],
         "Yellow": [[0,0], [1,1]]
