@@ -26,7 +26,7 @@ def generateNavDemo(seed: int = None):
     buoys['Green'] = [[centerX - horizontal_offset - C.BUOY_WIDTH, min_y], [centerX - horizontal_offset - C.BUOY_WIDTH, min_y + vertical_offset]]
     buoys['Red'] = [[centerX - horizontal_offset, min_y], [centerX - horizontal_offset, min_y + vertical_offset]]
 
-    boatPosition = [centerX - C.BOAT_SIZE[0], 20]
+    boatPosition = [centerX - C.BOAT_SIZE[0]/2, 20]
     boatTheta = math.pi / 2
     return Config(boatPosition, boatTheta, buoys)
 
