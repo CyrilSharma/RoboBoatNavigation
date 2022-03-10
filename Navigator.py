@@ -7,15 +7,11 @@ import FrameConstants as FC
 from pynput import keyboard
 class SimulatedNavigator():
     def __init__(self, config):
-        self.task = config.task
+        self.buoys = config.buoys
         self.boat = Boat(config.boatPos, config.boatTheta)
-        self.initialize()
-
-    def initialize(self):
-        self.visualizer = TopDownVisualizer(self.boat, utils.getBuoysAbs(self.task))
-        self.cvisualizer = CameraVisualizer(utils.absPosToFrame(utils.getBuoysAbs(self.task), self.boat))
-        self.buoys = utils.getBuoysAbs(self.task)
-        self.initRunMethod()
+        self.visualizer = TopDownVisualizer(self.boat, self.buoys)
+        self.cvisualizer = CameraVisualizer(utils.absPosToFrame(self.buoys, self.boat))
+        self.initRunMethod(config.task)
 
     def run(self):
         block = False
@@ -45,8 +41,8 @@ class SimulatedNavigator():
                 self.cvisualizer.update(utils.absPosToFrame(self.buoys, self.boat))
                 time.sleep(FC.Refresh_Sec)
     
-    def initRunMethod(self):
-        if self.task == 'NavChannelDemo':
+    def initRunMethod(self, task):
+        if task == 'NavChannelDemo':
             self.runMethod = self.navigateChannel
         else:
             raise Exception("Invalid task")

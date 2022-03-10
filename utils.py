@@ -13,7 +13,7 @@ def loadConfig(task: str):
         boatPos = data[task]['Boat']['Position']
         boatTheta = data[task]['Boat']['Theta']
         buoys = getBuoysAbs(task)
-    return Config(boatPos, boatTheta, buoys)
+    return Config(task, boatPos, boatTheta, buoys)
 
 def getBuoysAbs(task: str):
     buoys = []

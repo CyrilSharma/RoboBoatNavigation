@@ -6,14 +6,14 @@ import math
 
 def generateBuoys(task: str, seed: int = None):
     if task.lower() == 'navchanneldemo':
-        config = generateNavDemo(seed)
+        config = generateNavDemo(task, seed)
     elif task.lower() == 'avoidcrowds':
-        config = generateAvoidCrowds(seed)
+        config = generateAvoidCrowds(task, seed)
     else:
         raise Exception("Invalid task")
     return config
 
-def generateNavDemo(seed: int = None):
+def generateNavDemo(task, seed: int = None):
     if seed is not None:
         random.seed(seed)
 
@@ -28,9 +28,9 @@ def generateNavDemo(seed: int = None):
 
     boatPosition = [centerX - C.BOAT_SIZE[0]/2, 20]
     boatTheta = math.pi / 2
-    return Config(boatPosition, boatTheta, buoys)
+    return Config(task, boatPosition, boatTheta, buoys)
 
-def generateAvoidCrowds(seed: int = None):
+def generateAvoidCrowds(task, seed: int = None):
     if seed is not None:
         random.seed(seed)
 
@@ -58,4 +58,4 @@ def generateAvoidCrowds(seed: int = None):
     
     boatPosition = [FC.Window_Width / 2, 20]
     boatTheta = math.pi / 2
-    return Config(boatPosition, boatTheta, buoys)
+    return Config(task, boatPosition, boatTheta, buoys)
