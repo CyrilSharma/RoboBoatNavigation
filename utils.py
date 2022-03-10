@@ -1,6 +1,6 @@
 import math
 import json
-import Config
+from SimConfig import Config
 import Constants
 import FrameConstants as FC
 from Buoy import Buoy
@@ -8,7 +8,7 @@ from pymavlink import mavutil
 import time
 
 def loadConfig(task: str):
-    with open('Config.json') as f:
+    with open('BuoyPositions.json') as f:
         data = json.load(f)
         boatPos = data[task]['Boat']['Position']
         boatTheta = data[task]['Boat']['Theta']

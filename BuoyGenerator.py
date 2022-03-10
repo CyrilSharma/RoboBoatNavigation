@@ -1,5 +1,5 @@
 import random
-from Config import Config
+from SimConfig import Config
 import FrameConstants as FC
 import Constants as C
 import math
