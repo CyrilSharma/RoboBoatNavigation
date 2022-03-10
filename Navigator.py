@@ -6,12 +6,12 @@ import Constants
 import FrameConstants as FC
 from pynput import keyboard
 class SimulatedNavigator():
-    def __init__(self, task, **kwargs):
-        self.task = task
-        self.initialize(kwargs)
+    def __init__(self, config):
+        self.task = config.task
+        self.boat = Boat(config.boatPos, config.boatTheta)
+        self.initialize()
 
-    def initialize(self, kwargs):
-        self.boat = Boat(kwargs.get('boatInit', [0, 0]))
+    def initialize(self):
         self.visualizer = TopDownVisualizer(self.boat, utils.getBuoysAbs(self.task))
         self.cvisualizer = CameraVisualizer(utils.absPosToFrame(utils.getBuoysAbs(self.task), self.boat))
         self.buoys = utils.getBuoysAbs(self.task)
