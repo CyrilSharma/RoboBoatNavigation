@@ -16,6 +16,11 @@ class Boat():
         self.theta += accl[1] * dt
         self.vx += accl[0] * dt
         self.vy += accl[1] * dt
+        if (abs(self.vx) > 10):
+            self.vx = 10 * math.copysign(1, self.vx)
+        if (abs(self.vy) > 10):
+            self.vy = 10 * math.copysign(1, self.vy)
+
         dx = (self.vx * math.cos(self.theta) + self.vy * math.sin(self.theta)) * dt
         dy = (self.vx * math.sin(self.theta) + self.vy * math.cos(self.theta)) * dt
         self.x += dx

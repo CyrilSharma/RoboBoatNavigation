@@ -23,12 +23,19 @@ def generateNavDemo(task, seed: int = None):
     vertical_offset = random.randint(20, 50)
     min_y = 50
 
-    buoys = {}
-    buoys['Green'] = [[centerX - horizontal_offset - C.BUOY_WIDTH, min_y], [centerX - horizontal_offset - C.BUOY_WIDTH, min_y + vertical_offset]]
-    buoys['Red'] = [[centerX - horizontal_offset, min_y], [centerX - horizontal_offset, min_y + vertical_offset]]
+    buoys = []
+
+    greenBuoys = [[centerX - horizontal_offset - C.BUOY_WIDTH, min_y], [centerX - horizontal_offset - C.BUOY_WIDTH, min_y + vertical_offset]]
+    for i in greenBuoys:
+        buoys.append(Buoy(i, 'Green'))
+    
+    redBuoys = [[centerX + horizontal_offset, min_y], [centerX + horizontal_offset, min_y + vertical_offset]]
+    for i in redBuoys:
+        buoys.append(Buoy(i, 'Red'))
 
     boatPosition = [centerX - C.BOAT_SIZE[0]/2, 20]
     boatTheta = math.pi / 2
+
     return Config(task, boatPosition, boatTheta, buoys)
 
 def generateAvoidCrowds(task, seed: int = None):
@@ -43,17 +50,17 @@ def generateAvoidCrowds(task, seed: int = None):
     integral = 0
 
     for i in range(numBuoys):
-        integral += random.randint(0, 1) * fluctuationSize
+        integral += random.randint(-1, 1) * fluctuationSize
         xpositions.append(int(centerX - offset + integral))
 
     buoys = []
+    y = 50
     for i in range(numBuoys):
-        y = 50
-        for x in xpositions:
-            buoys.append(Buoy([x, y + random.randint(-3, 3)], 'Green'))
-            buoys.append(Buoy([x + 2 * offset, y + random.randint(-3, 3)], 'Red'))
-            y += 20
-            
+        x = xpositions[i]
+        buoys.append(Buoy([x, y + random.randint(-1, 1)], 'Green'))
+        buoys.append(Buoy([x + 2 * offset, y + random.randint(-1, 1)], 'Red'))
+        y += 20
+
     boatPosition = [FC.Window_Width / 2, 20]
     boatTheta = math.pi / 2
     return Config(task, boatPosition, boatTheta, buoys)

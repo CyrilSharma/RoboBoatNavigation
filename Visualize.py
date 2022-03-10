@@ -33,7 +33,7 @@ class CameraVisualizer(Visualizer):
         self.makeBuoys(buoys, boat)
     
     def makeBuoys(self, buoys, boat):
-        sortedBuoys = sorted(buoys, key=lambda buoy: (buoy.x - boat.x) ** 2 + (buoy.y - boat.y) ** 2)
+        sortedBuoys = sorted(buoys, key=lambda buoy: (buoy.x - boat.x) ** 2 + (buoy.y - boat.y) ** 2, reverse=True)
         for buoy in sortedBuoys:
             self.canvas.create_rectangle(buoy.x - buoy.width / 2, FC.Window_Height - (buoy.y - buoy.height / 2), buoy.x + buoy.width / 2, FC.Window_Height - (buoy.y + buoy.height / 2), fill=buoy.color)
     
