@@ -9,6 +9,22 @@ def generateBuoys(task: str, seed: int = None):
         raise Exception("Invalid task")
     return buoys
 
+def generateNavigationBuoys(seed: int = None):
+    if seed is not None:
+        random.seed(seed)
+
+    centerX = FC.Window_Width/2
+    horizontal_offset = random.randint(5, 15)
+    vertical_offset = random.randint(20, 50)
+    min_y = 50
+
+    buoys = {}
+    buoys['Green'] = [[centerX - horizontal_offset - C.BOAT_SIZE[0], min_y], [centerX - horizontal_offset - C.BOAT_SIZE[0], min_y + vertical_offset]]
+    buoys['Red'] = [[centerX - horizontal_offset, min_y], [centerX - horizontal_offset, min_y + vertical_offset]]
+
+    return buoys
+
+
 def generateAvoidCrowdsBuoys(seed: int = None):
     if seed is not None:
         random.seed(seed)
