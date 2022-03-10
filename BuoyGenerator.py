@@ -9,7 +9,7 @@ def generateBuoys(task: str, seed: int = None):
         raise Exception("Invalid task")
     return buoys
 
-def generateNavigationBuoys(seed: int = None):
+def generateAvoidCrowdsBuoys(seed: int = None):
     if seed is not None:
         random.seed(seed)
 
