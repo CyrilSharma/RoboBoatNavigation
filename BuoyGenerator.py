@@ -7,9 +7,12 @@ import math
 
 def generateBuoys(task: str, seed: int = None):
     if task.lower() == 'navchanneldemo':
+        #config = generateNavDemo(task, seed)
         config = generateNavDemo(task, seed)
     elif task.lower() == 'avoidcrowds':
         config = generateAvoidCrowds(task, seed)
+    elif 'test' in task.lower() or 'straight' in task.lower():
+        config = straightline(task, seed)
     else:
         raise Exception("Invalid task")
     return config
@@ -30,6 +33,30 @@ def generateNavDemo(task, seed: int = None):
         buoys.append(Buoy(i, 'Green'))
     
     redBuoys = [[centerX + horizontal_offset, min_y], [centerX + horizontal_offset, min_y + C.BUOY_HEIGHT + vertical_offset]]
+    for i in redBuoys:
+        buoys.append(Buoy(i, 'Red'))
+
+    boatPosition = [centerX - C.BOAT_SIZE[0]/2, 20]
+    boatTheta = math.pi / 2
+
+    return Config(task, boatPosition, boatTheta, buoys)
+
+def straightline(task, seed: int = None):
+    if seed is not None:
+        random.seed(seed)
+
+    centerX = FC.Window_Width/2
+    horizontal_offset = random.randint(5, 15)
+    vertical_offset = random.randint(20, 50)
+    min_y = 50
+
+    buoys = []
+
+    greenBuoys = [[centerX - horizontal_offset - C.BUOY_WIDTH, min_y + i * (C.BUOY_HEIGHT + vertical_offset)]for i in range(10)]
+    for i in greenBuoys:
+        buoys.append(Buoy(i, 'Green'))
+    
+    redBuoys = [[centerX + horizontal_offset, min_y + i * (C.BUOY_HEIGHT + vertical_offset)] for i in range(10)]
     for i in redBuoys:
         buoys.append(Buoy(i, 'Red'))
 

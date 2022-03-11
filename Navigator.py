@@ -43,6 +43,8 @@ class SimulatedNavigator():
             self.runMethod = self.navigateChannel
         elif task.lower() == 'avoidcrowds':
             self.runMethod = self.navigateChannel
+        elif 'test' in task.lower() or 'straight' in task.lower():
+            self.runMethod = self.navigateChannel
         else:
             raise Exception("Invalid task")
 
