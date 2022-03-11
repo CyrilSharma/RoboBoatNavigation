@@ -1,5 +1,5 @@
 import math
-
+import Constants
 class Boat():
     def __init__(self, position=[0,0], theta=math.pi/2):
         self.x = position[0]
@@ -13,16 +13,16 @@ class Boat():
     
     # remake system so that it moves in direction of orientation
     def update(self, accl, dt):
-        self.theta += accl[1] * dt
+        self.theta += accl[0] * dt
         self.vx += accl[0] * dt
         self.vy += accl[1] * dt
-        if (abs(self.vx) > 10):
-            self.vx = 10 * math.copysign(1, self.vx)
-        if (abs(self.vy) > 10):
-            self.vy = 10 * math.copysign(1, self.vy)
+        if (abs(self.vx) > Constants.MAX_SPEED):
+            self.vx = Constants.MAX_SPEED * math.copysign(1, self.vx)
+        if (abs(self.vy) > Constants.MAX_SPEED):
+            self.vy = Constants.MAX_SPEED * math.copysign(1, self.vy)
 
-        dx = (self.vx * math.cos(self.theta) + self.vy * math.sin(self.theta)) * dt
-        dy = (self.vx * math.sin(self.theta) + self.vy * math.cos(self.theta)) * dt
+        dx = (self.vy * math.cos(self.theta) + self.vx * math.sin(self.theta)) * dt
+        dy = (self.vy * math.sin(self.theta) + self.vx * math.cos(self.theta)) * dt
         self.x += dx
         self.y += dy
         return [dx, dy]
