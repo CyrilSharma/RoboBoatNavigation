@@ -25,11 +25,11 @@ def generateNavDemo(task, seed: int = None):
 
     buoys = []
 
-    greenBuoys = [[centerX - horizontal_offset - C.BUOY_WIDTH, min_y], [centerX - horizontal_offset - C.BUOY_WIDTH, min_y + vertical_offset]]
+    greenBuoys = [[centerX - horizontal_offset - C.BUOY_WIDTH, min_y], [centerX - horizontal_offset - C.BUOY_WIDTH, min_y + C.BUOY_HEIGHT + vertical_offset]]
     for i in greenBuoys:
         buoys.append(Buoy(i, 'Green'))
     
-    redBuoys = [[centerX + horizontal_offset, min_y], [centerX + horizontal_offset, min_y + vertical_offset]]
+    redBuoys = [[centerX + horizontal_offset, min_y], [centerX + horizontal_offset, min_y + C.BUOY_HEIGHT + vertical_offset]]
     for i in redBuoys:
         buoys.append(Buoy(i, 'Red'))
 
