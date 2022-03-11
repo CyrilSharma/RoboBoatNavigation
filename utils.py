@@ -54,7 +54,7 @@ def absPosToFrame(buoyList, boat):
         buoyTheta = math.atan2(dy, dx)
         dTheta = buoyTheta - boat.theta
         dTheta = (dTheta + math.pi) % (2 * math.pi) - math.pi
-        cutoffAngle = math.pi / 3
+        cutoffAngle = math.pi / 2.5
         if (dTheta < -cutoffAngle or dTheta > cutoffAngle):
             continue
         dist = math.sqrt(dx**2 + dy**2)

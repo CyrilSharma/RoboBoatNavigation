@@ -25,7 +25,7 @@ class TopDownVisualizer(Visualizer):
             self.canvas.move(self.boat, update[0], update[1])
             self.Window.update()
         else:
-            return Exception("Window is not open")
+            return WindowException()
 
 class CameraVisualizer(Visualizer):
     def __init__(self):
@@ -43,4 +43,7 @@ class CameraVisualizer(Visualizer):
             self.makeBuoys(buoys, boat)
             self.Window.update()
         else:
-            return Exception("Window is not open")
+            return WindowException()
+        
+class WindowException(Exception):
+    pass
