@@ -66,7 +66,8 @@ class SimulatedNavigator():
         redArea = closestBuoys['Red'].width * closestBuoys['Red'].height
         greenx = closestBuoys['Green'].x
         greenArea = closestBuoys['Green'].width * closestBuoys['Green'].height
-        weight = greenArea / (redArea + greenArea)
+        weightDegree = 2.5
+        weight = ((2 * weightDegree - 1) * greenArea + redArea) / ((2 * weightDegree) * (redArea + greenArea))
         avgX = (weight * redx + (1 - weight) * greenx)
         attraction = (avgX - centerx) * 0.1
 
