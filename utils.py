@@ -21,32 +21,51 @@ def loadConfig(task: str):
                 buoys.append(Buoy(pos, color))
     return Config(task, boatPos, boatTheta, buoys)
 
+def isCloseEnough(pair1, pair2):
+    if pair1 is None or pair2 is None:
+        return False
+    if None in pair1 or None in pair2:
+        return False
+    dist1 = math.sqrt((pair1['Red'].x - pair2['Red'].x)**2 + (pair1['Red'].y - pair2['Red'].y)**2)
+    dist2 = math.sqrt((pair1['Green'].x - pair2['Green'].x)**2 + (pair1['Green'].y - pair2['Green'].y)**2)
+     #.x - pair2.x)**2 + (pair1.y - pair2.y)**2)
+    return (dist1 + dist2 < 100)
+
 # find closest buoy with specific color
-def findClosestBuoys(buoyList):
+def findClosestBuoyPair(buoyList, pastBuoys, override=False):
     # buoys that appear the largest, are the closest
     if len(buoyList) < 1:
         return None
 
-    closestBuoys = []
-    maxAreas = [-1,-1]
-    for buoy in buoyList:
-        area = buoy.pixelData.width * buoy.pixelData.height
-        if buoy.color == 'Red':
-            if area > maxAreas[0]:
-                maxAreas[0] = area
-                closestBuoys.append(buoy)
-        elif buoy.color == 'Green':
-            if area > maxAreas[1]:
-                maxAreas[1] = area
-                closestBuoys.append(buoy)
-        
-    buoys = {}
-    for buoy in closestBuoys:
-        if buoy.color not in closestBuoys:
-            buoys[buoy.color] = buoy
+    # sort buoys by area
+    redBuoyList = [buoy for buoy in buoyList if buoy.color == 'Red']
+    greenBuoyList = [buoy for buoy in buoyList if buoy.color == 'Green']
+    sortedRedBuoys = sorted(redBuoyList, key=lambda buoy: buoy.pixelData.width * buoy.pixelData.height, reverse=True)
+    sortedGreenBuoys = sorted(greenBuoyList, key=lambda buoy: buoy.pixelData.width * buoy.pixelData.height, reverse=True)
+    
+    if len(sortedRedBuoys) < 1 or len(sortedGreenBuoys) < 1:
+        return {"Red": None, "Green": None}
+
+    redBuoy = None
+    greenBuoy = None
+    if len(sortedRedBuoys) > 0:
+        redBuoy = sortedRedBuoys[0].pixelData
+    if len(sortedGreenBuoys) > 0:
+        greenBuoy = sortedGreenBuoys[0].pixelData
+    buoys = {"Red": redBuoy, "Green": greenBuoy}
+
+    """ if not isCloseEnough(pastBuoys, buoys) and not override:
+        redBuoy = None
+        greenBuoy = None
+        if len(sortedRedBuoys) >= 2:
+            redBuoy = sortedRedBuoys[1]
+        if len(sortedGreenBuoys) >= 2:
+            greenBuoy = sortedGreenBuoys[1]
+        buoys = {"Red": redBuoy, "Green": greenBuoy} """
+
     return buoys
 
-def absPosToFrame(buoyList, boat):
+def updateFrame(buoyList, boat):
     updatedList = []
     for buoy in buoyList:
         dx = buoy.x - boat.x

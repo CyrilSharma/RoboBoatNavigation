@@ -1,3 +1,4 @@
+import tkinter
 import utils
 from Boat import Boat
 from Visualize import TopDownVisualizer, CameraVisualizer, WindowException
@@ -9,9 +10,11 @@ from pynput import keyboard
 class SimulatedNavigator():
     def __init__(self, config):
         self.boat = Boat(config.boatPos, config.boatTheta)
-        self.buoys = utils.absPosToFrame(config.buoys, self.boat)
+        self.buoys = utils.updateFrame(config.buoys, self.boat)
         self.visualizer = TopDownVisualizer(self.buoys, self.boat)
         self.cvisualizer = CameraVisualizer()
+        self.pastBuoys = None
+        self.frameCount = 0
         self.initRunMethod(config.task)
 
     def run(self):
@@ -27,16 +30,18 @@ class SimulatedNavigator():
         listener.start()
 
         while True:
-            if not playing:
-                continue
-            try: 
+            try:
+                if not playing:
+                    continue
                 accl = self.runMethod()
                 update = self.boat.update(accl, FC.Refresh_Sec)
                 self.visualizer.animate(update)
-                self.cvisualizer.update(utils.absPosToFrame(self.buoys, self.boat), self.boat)
+                self.cvisualizer.update(utils.updateFrame(self.buoys, self.boat), self.boat)
                 time.sleep(FC.Refresh_Sec)
-            except Exception as e:
+                self.frameCount += 1
+            except tkinter.TclError:
                 break
+
     
     def initRunMethod(self, task):
         if task.lower() == 'navchanneldemo':
@@ -49,22 +54,30 @@ class SimulatedNavigator():
             raise Exception("Invalid task")
 
     def navigateChannel(self):
-        closestBuoys = utils.findClosestBuoys(utils.absPosToFrame(self.buoys, self.boat))
+        closestBuoys = utils.findClosestBuoyPair(utils.updateFrame(self.buoys, self.boat), self.pastBuoys, self.frameCount==0)
         if closestBuoys is None:
             return [0, 0]
-        elif 'Red' not in closestBuoys or 'Green' not in closestBuoys:
+        elif None is closestBuoys['Red'] or None is closestBuoys['Green']:
             return [0, 0]
-        centerx = FC.Window_Width * 0.5
-        redx = closestBuoys['Red'].pixelData.x
-        greenx = closestBuoys['Green'].pixelData.x
-        avgX = (redx + greenx) / 2
-        attraction = (avgX - centerx) * 0.1
-        repulsion =  (repulsiveForce(-(redx - centerx)) + repulsiveForce(-(greenx - centerx)))
-        delta1 = [attraction, 1]
-        delta2 = numToVec(repulsion,1)
-        print(f"red: {repulsiveForce(-(redx - centerx))} | green: {repulsiveForce(-(greenx - centerx))} | {delta1} | {delta2}")
+        
 
-        return normalize(addVectors(delta1, delta2), Constants.MAX_ACCELERATION)  
+        centerx = FC.Window_Width * 0.5
+        redx = closestBuoys['Red'].x 
+        redArea = closestBuoys['Red'].width * closestBuoys['Red'].height
+        greenx = closestBuoys['Green'].x
+        greenArea = closestBuoys['Green'].width * closestBuoys['Green'].height
+        weight = greenArea / (redArea + greenArea)
+        avgX = (weight * redx + (1 - weight) * greenx)
+        attraction = (avgX - centerx) * 0.1
+
+        repulsion = 0 # (repulsiveForce(-(redx - centerx)) + repulsiveForce(-(greenx - centerx)))
+        delta1 = [attraction, 1]
+        delta2 = [repulsion, 1]
+
+        # save the buoy positions
+        self.pastBuoys = closestBuoys
+
+        return normalize(addVectors(delta1, delta2), Constants.MAX_ACCELERATION)
 
 def addVectors(vec1, vec2):
     return [vec1[0] + vec2[0], vec1[1] + vec2[1]]   
@@ -72,16 +85,8 @@ def addVectors(vec1, vec2):
 def normalize(vec, scale):
     mag = math.sqrt(vec[0]**2 + vec[1]**2)
     return [vec[0] * scale / mag, vec[1] * scale / mag]
-    
-def numToVec(delta, scale):
-    # map number to [0, pi]
-    theta = math.pi * sigmoid(delta)
-    return [math.cos(theta) * scale, math.sin(theta) * scale]
-
-def sigmoid(x):
-    sig = 1 / (1 + math.exp(-x * 30))
-    return sig
 
 def repulsiveForce(diff):
-    force = math.copysign(1, diff) / (((0.5*diff)**2) + 0.1)
-    return force
+    if abs(diff) < 50:
+        return 1 * math.copysign(1, diff)
+    return 0
