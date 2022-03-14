@@ -52,11 +52,13 @@ def straightline(task, seed: int = None):
 
     buoys = []
 
-    greenBuoys = [[centerX - horizontal_offset - C.BUOY_WIDTH, min_y + i * (C.BUOY_HEIGHT + vertical_offset)]for i in range(10)]
+    num_pairs = int(input('How many pairs?: '))
+
+    greenBuoys = [[centerX - horizontal_offset - C.BUOY_WIDTH, min_y + i * (C.BUOY_HEIGHT + vertical_offset)]for i in range(num_pairs)]
     for i in greenBuoys:
         buoys.append(Buoy(i, 'Green'))
     
-    redBuoys = [[centerX + horizontal_offset, min_y + i * (C.BUOY_HEIGHT + vertical_offset)] for i in range(10)]
+    redBuoys = [[centerX + horizontal_offset, min_y + i * (C.BUOY_HEIGHT + vertical_offset)] for i in range(num_pairs)]
     for i in redBuoys:
         buoys.append(Buoy(i, 'Red'))
 

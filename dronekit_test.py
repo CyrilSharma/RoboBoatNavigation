@@ -2,7 +2,7 @@
 from dronekit import connect, VehicleMode
 import time
 
-connection_string = "../../../../../../../dev/tty.usbmodem1101"
+connection_string = "/dev/ttyAMA0"
 
 # Connect to the Vehicle.
 print("Connecting to vehicle on: %s" % (connection_string,))
