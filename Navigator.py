@@ -1,6 +1,6 @@
 import tkinter
 import utils
-from Boat import Boat
+from SimulatedBoat import SimulatedBoat
 from Visualize import TopDownVisualizer, CameraVisualizer, WindowException
 import time
 import math
@@ -9,7 +9,7 @@ import FrameConstants as FC
 from pynput import keyboard
 class SimulatedNavigator():
     def __init__(self, config):
-        self.boat = Boat(config.boatPos, config.boatTheta)
+        self.boat = SimulatedBoat(config.boatPos, config.boatTheta)
         self.buoys = utils.updateFrame(config.buoys, self.boat)
         self.visualizer = TopDownVisualizer(self.buoys, self.boat)
         self.cvisualizer = CameraVisualizer()
@@ -92,7 +92,7 @@ class SimulatedNavigator():
 
 class PixhawkNavigator():
     def __init__(self, config):
-        self.boat = Boat(config.boatPos, config.boatTheta)
+        self.boat = SimulatedBoat(config.boatPos, config.boatTheta)
         self.frameCount = 0
         self.initRunMethod(config.task)
 
