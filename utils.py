@@ -89,7 +89,6 @@ def updateFrame(buoyList, boat):
 
 # https://dronekit-python.readthedocs.io/en/latest/guide/copter/guided_mode.html
 def send_ned_velocity(vehicle, velocity, duration):
-    pass
     """
     Move vehicle in direction based on specified velocity vectors.
     """
