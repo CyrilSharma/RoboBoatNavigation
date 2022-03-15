@@ -12,10 +12,13 @@ def parseArguments():
     # Create the parser
     parser = argparse.ArgumentParser()
     # Add an argument
+    parser.add_argument('-p', '--pixhawk', action='store_true', required=False, help='Use Pixhawk')
     parser.add_argument('--task', '-t', type=str, required=True)
     parser.add_argument('--seed', '-s', type=int, required=False)
     # Parse the argument
     args = parser.parse_args()
+    if args.pixhawk:
+        print("RUN PIXHAWK CODE")
     if (args.seed is not None):
         config = generateBuoys(args.task, args.seed)
     else:

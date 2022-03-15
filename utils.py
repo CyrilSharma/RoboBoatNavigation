@@ -32,7 +32,7 @@ def isCloseEnough(pair1, pair2):
     return (dist1 + dist2 < 100)
 
 # find closest buoy with specific color
-def findClosestBuoyPair(buoyList, pastBuoys, override=False):
+def findClosestBuoyPair(buoyList):
     # buoys that appear the largest, are the closest
     if len(buoyList) < 1:
         return None
@@ -86,22 +86,3 @@ def updateFrame(buoyList, boat):
         buoy.updatePixelData(center, buoy.width*scale, buoy.height*scale)
         updatedList.append(buoy)
     return updatedList
-
-# https://dronekit-python.readthedocs.io/en/latest/guide/copter/guided_mode.html
-def send_ned_velocity(vehicle, velocity, duration):
-    """
-    Move vehicle in direction based on specified velocity vectors.
-    """
-    msg = vehicle.message_factory.set_position_target_local_ned_encode(
-        0,       # time_boot_ms (not used)
-        0, 0,    # target system, target component
-        mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, # frame
-        0b0000111111000111, # type_mask (only speeds enabled)
-        0, 0, 0, # x, y, z positions (not used)
-        velocity[0], velocity[1], velocity[2], # x, y, z velocity in m/s
-        0, 0, 0, # x, y, z acceleration (not supported yet, ignored in GCS_Mavlink)
-        0, 0)    # yaw, yaw_rate (not supported yet, ignored in GCS_Mavlink)
-    # send command to vehicle on 1 Hz cycle
-    for _ in range(0, duration):
-        vehicle.send_mavlink(msg)
-        time.sleep(1)

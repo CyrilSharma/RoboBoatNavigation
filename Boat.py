@@ -4,11 +4,13 @@ from dronekit import mavutil
 # import cv
 
 
-class Boat:
+class Boat():
     # port name like /dev/ttyAMA0
     def __init__(self, port_name):
-        self.vehicle = dk.connect(port_name, baud=57600, wait_ready=True)
+        self.vehicle = dk.connect(port_name=None, baud=57600, wait_ready=True)
         print('Successfully connected')
+        self.check_in()
+        self.updateState()
 
     def check_in(self):
         print("Vehicle state:")
@@ -19,6 +21,11 @@ class Boat:
         print(f" Mode: {self.vehicle.mode.name}")
         print(f" Local location: {self.vehicle.location.local_frame}")
         print(f" Velocity: {self.vehicle.velocity}")
+    
+    def updateState(self):
+        self.position = self.vehicle.location.local_frame
+        self.velocity = self.vehicle.velocity
+        self.heading = self.vehicle.heading
 
     # velocity as a list
     # local velocity
