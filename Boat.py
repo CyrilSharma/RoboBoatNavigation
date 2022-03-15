@@ -6,11 +6,15 @@ from dronekit import mavutil
 
 class Boat():
     # port name like /dev/ttyAMA0
-    def __init__(self, port_name):
+    def __init__(self, port_name, id):
+        self.id = id
         self.vehicle = dk.connect(port_name=None, baud=57600, wait_ready=True)
         print('Successfully connected')
         self.check_in()
         self.updateState()
+     
+    def get_id(self):
+        return self.id
 
     def check_in(self):
         print("Vehicle state:")
@@ -59,4 +63,3 @@ class Boat():
     # from cv get positions relative to frame
 
     # def get velocities
-    
