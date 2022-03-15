@@ -1,4 +1,3 @@
-import tkinter
 import utils
 from SimulatedBoat import SimulatedBoat
 from Boat import Boat
@@ -62,44 +61,6 @@ class Navigator():
 
     def getClosestBuoys():
         pass
-
-class SimulatedNavigator(Navigator):
-    def __init__(self, config):
-        self.boat = SimulatedBoat(config.boatPos, config.boatTheta)
-        self.buoys = utils.updateFrame(config.buoys, self.boat)
-        self.visualizer = TopDownVisualizer(self.buoys, self.boat)
-        self.cvisualizer = CameraVisualizer()
-        self.pastBuoys = None
-        self.frameCount = 0
-        self.initRunMethod(config.task)
-
-    def run(self):
-        global playing
-        playing = True
-
-        def on_press(key):
-            if key == keyboard.Key.space:
-                global playing
-                playing = not playing
-
-        listener = keyboard.Listener(on_press=on_press)
-        listener.start()
-
-        while True:
-            try:
-                if not playing:
-                    continue
-                accl = self.runMethod()
-                update = self.boat.update(accl, FC.Refresh_Sec)
-                self.visualizer.animate(update)
-                self.cvisualizer.update(utils.updateFrame(self.buoys, self.boat), self.boat)
-                time.sleep(FC.Refresh_Sec)
-                self.frameCount += 1
-            except tkinter.TclError:
-                break
-    
-    def getClosestBuoys(self):
-        return utils.findClosestBuoyPair(self.buoys)
 
 class PixhawkNavigator():
     def __init__(self, config):
