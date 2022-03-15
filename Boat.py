@@ -2,7 +2,7 @@ import dronekit as dk
 from dronekit import mavutil
 import Constants
 from Navigator import PixhawkNavigator
-# import navigation package
+from Buoy import Buoy
 # import cv
 
 
@@ -49,9 +49,18 @@ class Boat():
 
     def run_navigator(config):
         # create navigator, pass config
-        # run method, pass closest buoys, 
-        pass
-    # def get_buoy_positions
+        nav = PixhawkNavigator(config)
+        while True:
+            nav.setClosestBuoys(self.get_closes_buoys())
+            accl = nav.runMethod()
+            cur_vel = self.velocity
+            new_vel = [cur_vel[0] + accl[0] * Constants.UPDATE_FREQ, cur_vel[1] + accl[1] * Constants.UPDATE_FREQ]
+            self.send_velocity(new_vel)
+            self.updateState()
+            time.sleep(Constants.UPDATE_FREQ)
+    
     # from cv get positions relative to frame
-
+    def get_closest_buoys:
+        # create buoy objects
+        pass
     # def get velocities
