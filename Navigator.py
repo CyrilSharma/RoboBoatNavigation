@@ -24,7 +24,7 @@ class Navigator():
             raise Exception("Invalid task")
 
     def navigateChannel(self):
-        closestBuoys = self.getClosestBuoys()
+        closestBuoys = self.closestbuoys
         if closestBuoys is None:
             return [0, 0]
         elif closestBuoys['Red'] is not None and closestBuoys['Green'] is not None:
@@ -57,29 +57,21 @@ class Navigator():
 
         return normalize(addVectors(aDelta, rDelta), Constants.MAX_ACCELERATION)
 
-    def getClosestBuoys():
+    def setClosestBuoys():
         pass
-
+ 
 class PixhawkNavigator(Navigator):
-    # entry point
     
     def __init__(self, config):
         self.initRunMethod(config.task)
 
     # this can be made part of boat class
     def run(self):
-        while True:
-            accl = self.runMethod()
-            cur_vel = self.boat.velocity
-            new_vel = [cur_vel[0] + accl[0] * Constants.UPDATE_FREQ, cur_vel[1] + accl[1] * Constants.UPDATE_FREQ]
-            # return a velocity
-            self.boat.send_velocity(new_vel)
-            time.sleep(Constants.UPDATE_FREQ)
-    
-    def getVelocityUpdate():
-        # return a velocity
-        pass
-
+        return self.runMethod()
+            
+    def setClosestBuoys(buoys):
+        self.closestbuoys = buoys
+      
 def addVectors(vec1, vec2):
     return [vec1[0] + vec2[0], vec1[1] + vec2[1]]   
 
