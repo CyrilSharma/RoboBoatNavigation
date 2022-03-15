@@ -1,7 +1,5 @@
 import utils
-from SimulatedBoat import SimulatedBoat
 from Boat import Boat
-from Visualize import TopDownVisualizer, CameraVisualizer, WindowException
 import time
 import math
 import Constants
@@ -62,21 +60,24 @@ class Navigator():
     def getClosestBuoys():
         pass
 
-class PixhawkNavigator():
+class PixhawkNavigator(Navigator):
+    # entry point
+    
     def __init__(self, config):
-        self.boat = Boat()
         self.initRunMethod(config.task)
 
+    # this can be made part of boat class
     def run(self):
         while True:
             accl = self.runMethod()
             cur_vel = self.boat.velocity
             new_vel = [cur_vel[0] + accl[0] * Constants.UPDATE_FREQ, cur_vel[1] + accl[1] * Constants.UPDATE_FREQ]
+            # return a velocity
             self.boat.send_velocity(new_vel)
             time.sleep(Constants.UPDATE_FREQ)
     
-    def getClosestBuoys():
-        # CV component goes here
+    def getVelocityUpdate():
+        # return a velocity
         pass
 
 def addVectors(vec1, vec2):
