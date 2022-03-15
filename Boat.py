@@ -34,7 +34,22 @@ class Boat:
             0, 0)  # yaw, yaw_rate (not supported yet, ignored in GCS_Mavlink)
         self.vehicle.send_mavlink(msg)
 
+    # relative coordinates to beginning position in NED
+    # North (x), East (y), Down (z) (not used)
+    def get_position(self):
+        return self.vehicle.location.local_frame
+    
+    # returns velocity as [vx, vy, vz] in m/s
+    def get_velocity(self):
+        return self.vehicle.velocity
+    
+    # returns current heading in degrees [0, 360] where 0 deg is N
+    def get_heading(self):
+        return self.vehicle.heading
+    
+    
     # def get_buoy_positions
     # from cv get positions relative to frame
 
     # def get velocities
+    
