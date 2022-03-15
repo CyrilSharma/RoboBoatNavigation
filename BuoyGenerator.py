@@ -39,7 +39,7 @@ def generateNavDemo(task, seed: int = None):
     boatPosition = [centerX - C.BOAT_SIZE[0]/2, 20]
     boatTheta = math.pi / 2
 
-    return Config(task, boatPosition, boatTheta, buoys)
+    return Config(task=task, pixhawk=False, boatPos=boatPosition, boatTheta=boatTheta, buoys=buoys)
 
 def straightline(task, seed: int = None):
     if seed is not None:
@@ -65,7 +65,7 @@ def straightline(task, seed: int = None):
     boatPosition = [centerX - C.BOAT_SIZE[0]/2, 20]
     boatTheta = math.pi / 2
 
-    return Config(task, boatPosition, boatTheta, buoys)
+    return Config(task=task, pixhawk=False, boatPos=boatPosition, boatTheta=boatTheta, buoys=buoys)
 
 def generateAvoidCrowds(task, seed: int = None):
     if seed is not None:
@@ -92,4 +92,4 @@ def generateAvoidCrowds(task, seed: int = None):
 
     boatPosition = [FC.Window_Width / 2, 20]
     boatTheta = math.pi / 2
-    return Config(task, boatPosition, boatTheta, buoys)
+    return Config(task=task, pixhawk=False, boatPos=boatPosition, boatTheta=boatTheta, buoys=buoys)

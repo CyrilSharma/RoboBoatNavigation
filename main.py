@@ -1,6 +1,7 @@
 import argparse
 from BuoyGenerator import generateBuoys
 from Navigator import SimulatedNavigator, PixhawkNavigator
+from SimConfig import Config
 import utils
 
 def main():
@@ -21,8 +22,8 @@ def parseArguments():
     # Parse the argument
     args = parser.parse_args()
     if args.pixhawk:
-        print("RUN PIXHAWK CODE")
-    if (args.seed is not None):
+        config = Config(task=args.task, pixhawk=True)
+    elif (args.seed is not None):
         config = generateBuoys(args.task, args.seed)
     else:
         config = utils.loadConfig(args.task)

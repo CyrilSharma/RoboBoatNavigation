@@ -99,11 +99,11 @@ class SimulatedNavigator(Navigator):
                 break
     
     def getClosestBuoys(self):
-        return utils.findClosestBuoyPair(self.buoys)
+        return utils.findClosestBuoyPair(utils.updateFrame(self.buoys, self.boat))
 
 class PixhawkNavigator():
     def __init__(self, config):
-        self.boat = Boat()
+        self.boat = Boat(None)
         self.initRunMethod(config.task)
 
     def run(self):

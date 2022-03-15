@@ -7,7 +7,7 @@ from dronekit import mavutil
 class Boat():
     # port name like /dev/ttyAMA0
     def __init__(self, port_name):
-        self.vehicle = dk.connect(port_name=None, baud=57600, wait_ready=True)
+        # self.vehicle = dk.connect(port_name=None, baud=57600, wait_ready=True)
         print('Successfully connected')
         self.check_in()
         self.updateState()
