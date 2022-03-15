@@ -1,11 +1,14 @@
 import argparse
 from BuoyGenerator import generateBuoys
-from Navigator import SimulatedNavigator
+from Navigator import SimulatedNavigator, PixhawkNavigator
 import utils
 
 def main():
     config = parseArguments()
-    navigator = SimulatedNavigator(config)
+    if not config.pixhawk: 
+        navigator = SimulatedNavigator(config)
+    else:
+        navigator = PixhawkNavigator(config)
     navigator.run()
 
 def parseArguments():
