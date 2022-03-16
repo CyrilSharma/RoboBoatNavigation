@@ -1,30 +1,39 @@
-import utils
-from Boat import Boat
 import time
 import math
-import Constants
-import FrameConstants as FC
-from pynput import keyboard
+import Constants  # import constants
+import FrameConstants as FC  # constants about video frame
 
+
+# define a navigator class that contains methods for tasks
+# navigate_channel returns acceleration vector to keep boat between buoys
 class Navigator():
+    # set the run method according to the task configuration passed in
     def __init__(self, config):
-        self.initRunMethod(config.task)
+        self.init_run_method(config.task)
     
+    # to be implemented by subclasses
     def run(self):
         pass
 
-    def initRunMethod(self, task):
+    # set method to turn according to task
+    # defaults currently to navigate_channel
+    def init_run_method(self, task):
         if task.lower() == 'navchanneldemo':
-            self.runMethod = self.navigateChannel
+            self.run_method = self.navigate_channel
         elif task.lower() == 'avoidcrowds':
-            self.runMethod = self.navigateChannel
+            self.run_method = self.navigate_channel
         elif 'test' in task.lower() or 'straight' in task.lower():
-            self.runMethod = self.navigateChannel
+            self.run_method = self.navigate_channel
         else:
             raise Exception("Invalid task")
 
-    def navigateChannel(self):
+    # returns acceleration vector 
+    # accesses closest buoys attribute of navigator (set by Boat)
+    def navigate_channel(self):
+        # get the closest buoys, set by Boat
         closestBuoys = self.closestbuoys
+        
+        # physics blackbox
         if closestBuoys is None:
             return [0, 0]
         elif closestBuoys['Red'] is not None and closestBuoys['Green'] is not None:
@@ -44,22 +53,25 @@ class Navigator():
             repulsion = 0
             for color in closestBuoys:
                 buoy = closestBuoys[color]
-                repulsion += repulsiveForce(-(buoy.x - centerx))
             aDelta = [attraction, 1]
             rDelta = [repulsion, 0]
-            return normalize(addVectors(aDelta, rDelta), Constants.MAX_ACCELERATION)
+            return normalize(add_vectors(aDelta, rDelta), Constants.MAX_ACCELERATION)
         elif None is closestBuoys['Red'] and None is closestBuoys['Green']:
             return [0,0]
 
-        # (repulsiveForce(-(redx - centerx)) + repulsiveForce(-(greenx - centerx)))
+        # (repulsive_force(-(redx - centerx)) + repulsive_force(-(greenx - centerx)))
         aDelta = [attraction, 1]
         rDelta = [repulsion, 0]
 
-        return normalize(addVectors(aDelta, rDelta), Constants.MAX_ACCELERATION)
+        # return acceleration 
+        return normalize(add_vectors(aDelta, rDelta), Constants.MAX_ACCELERATION)
 
-    def setClosestBuoys():
+    # implemented by subclass
+    def set_closest_buoys():
         pass
  
+# Pixhawk navigator defines a subclass of navigator
+# implements set_closest_buoys() and run()
 class PixhawkNavigator(Navigator):
     
     def __init__(self, config):
@@ -69,17 +81,21 @@ class PixhawkNavigator(Navigator):
     def run(self):
         return self.runMethod()
             
-    def setClosestBuoys(buoys):
+    # generic setter method to set buoys
+    # buoys is a dictionary of Buoy objects {'red': Buoy, 'green': Buoy}
+    def set_closest_buoys(buoys):
         self.closestbuoys = buoys
-      
-def addVectors(vec1, vec2):
+  
+# utility methods
+
+def add_vectors(vec1, vec2):
     return [vec1[0] + vec2[0], vec1[1] + vec2[1]]   
 
 def normalize(vec, scale):
     mag = math.sqrt(vec[0]**2 + vec[1]**2)
     return [vec[0] * scale / mag, vec[1] * scale / mag]
 
-def repulsiveForce(diff):
+def repulsive_force(diff):
     if abs(diff) < 200:
         return 1 * math.copysign(1, diff)
     return 0
