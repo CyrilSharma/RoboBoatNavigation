@@ -17,8 +17,9 @@ class Boat():
         self.id = name
         self.vehicle = dk.connect(port_name=None, baud=baudrate, wait_ready=True)  # creates a dronekit vehicle object associated with this boat object
         print('Successfully connected')
+        self.original_pos = self.vehicle.location.global_frame  # store the starting global position (lat, long) just in case, since all other positions are relative
         self.check_in()  # print a few things about the boat
-        self.updateState()  # set the state of the boat object 
+        self.update_state()  # set the state of the boat object 
      
     # return boat id
     def get_id(self):
@@ -38,7 +39,7 @@ class Boat():
     # set boat position, velocity, and heading to those of self.vehicle
     # makes it easier to call self.position instead of self.vehicle.location.local_frame etc
     # call every time velocity is updated
-    def updateState(self):
+    def update_state(self):
         self.position = self.vehicle.location.local_frame  # NED (N=y, E=x)
         self.velocity = self.vehicle.velocity  # [vx, vy, vz]
         self.heading = self.vehicle.heading  # [0, 360] where 0 degrees North
@@ -66,15 +67,16 @@ class Boat():
     def run_navigator(config):
         nav = PixhawkNavigator(config)  # create navigator, pass config
         while True:  # do this forever
-            self.updateState()  # get latest position information
-            nav.setClosestBuoys(self.get_closest_buoys())  # set the nav closest buoys to those found by CV (see get_closest_buoys)   
-            accl = nav.runMethod()  # run main nav method to get the acceleration
+            self.update_state()  # get latest position information
+            nav.set_closest_buoys(self.get_closest_buoys())  # set the nav closest buoys to those found by CV (see get_closest_buoys)   
+            accl = nav.run_method()  # run main nav method to get the acceleration
             cur_vel = self.velocity  # current vehicle velocity
             new_vel = [cur_vel[0] + accl[0] * Constants.UPDATE_FREQ, cur_vel[1] + accl[1] * Constants.UPDATE_FREQ]  # update velocity proportional to how often we update
             self.send_velocity(new_vel)  # push the velocity to pixhawk
             time.sleep(Constants.UPDATE_FREQ)  # pause for a little bit
     
     # from cv get positions relative to frame
+    # return a dictionary of Buoy objects {'red': Buoy, 'green': Buoy}
     def get_closest_buoys:
         # create buoy objects
         pass
