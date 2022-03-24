@@ -67,8 +67,8 @@ class Boat():
     def run_navigator(config):
         nav = PixhawkNavigator(config)  # create navigator, pass config
         while True:  # do this forever
-            self.update_state()  # get latest position information
             nav.set_closest_buoys(self.get_closest_buoys())  # set the nav closest buoys to those found by CV (see get_closest_buoys)   
+            self.update_state()  # get latest position information
             accl = nav.run_method()  # run main nav method to get the acceleration
             cur_vel = self.velocity  # current vehicle velocity
             new_vel = [cur_vel[0] + accl[0] * Constants.UPDATE_FREQ, cur_vel[1] + accl[1] * Constants.UPDATE_FREQ]  # update velocity proportional to how often we update
