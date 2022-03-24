@@ -66,6 +66,7 @@ class Boat():
     # --!-- might change to eliminate while True for other tasks --!--
     def run_navigator(config):
         nav = PixhawkNavigator(config)  # create navigator, pass config
+        t_start = time.time()
         while True:  # do this forever
             nav.set_closest_buoys(self.get_closest_buoys())  # set the nav closest buoys to those found by CV (see get_closest_buoys)   
             self.update_state()  # get latest position information
@@ -74,6 +75,7 @@ class Boat():
             new_vel = [cur_vel[0] + accl[0] * Constants.UPDATE_FREQ, cur_vel[1] + accl[1] * Constants.UPDATE_FREQ]  # update velocity proportional to how often we update
             self.send_velocity(new_vel)  # push the velocity to pixhawk
             time.sleep(Constants.UPDATE_FREQ)  # pause for a little bit
+            # velocity - update frequency + time spent getting buoys
     
     # from cv get positions relative to frame
     # return a dictionary of Buoy objects {'red': Buoy, 'green': Buoy}
