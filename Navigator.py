@@ -39,9 +39,9 @@ class Navigator():
         elif closestBuoys['Red'] is not None and closestBuoys['Green'] is not None:
             centerx = FC.Window_Width * 0.5
             redx = closestBuoys['Red'].x 
-            redArea = closestBuoys['Red'].width * closestBuoys['Red'].height
+            redArea = closestBuoys['Red'].area
             greenx = closestBuoys['Green'].x
-            greenArea = closestBuoys['Green'].width * closestBuoys['Green'].height
+            greenArea = closestBuoys['Green'].area
 
             weightDegree = 0.9
             weight = (weightDegree * greenArea + (1 - weightDegree) * redArea) / (redArea + greenArea)
