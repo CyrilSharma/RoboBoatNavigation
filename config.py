@@ -1,8 +1,6 @@
-import math
-
+# generic configuration object
 class Config():
-    def __init__(self, task=None, boatPos=[0, 0], boatTheta=math.pi/2, buoys=None):
+    def __init__(self, task=None):
         self.task = task
-        self.boatPos = boatPos
-        self.boatTheta = boatTheta
-        self.buoys = buoys
+        self.camera_width = 600  # default camera frame width
+        self.camera_height = 400  # default camera frame height
