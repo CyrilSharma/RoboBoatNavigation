@@ -10,16 +10,20 @@ import FrameConstants as FC
 import cv2
 from pynput import keyboard
 from cvBuoyFinder import findBuoys
+from dronekit import connect
 
 class Navigator():
     def __init__(self, config):
         self.cam = cv2.VideoCapture(0)
+        self.vehicle = connect("/dev/ttyAMA0", wait_ready=True)
         self.initRunMethod(config.task)
     
     def run(self):
         while True:
             accl = self.runMethod()
-            print(accl)
+            velocity = self.vehicle.velocity
+            newVel = [velocity.x + accl[0] * Constants.UPDATE_FREQ, velocity.y + accl[1] * Constants.UPDATE_FREQ]
+            # send new Velocity
             time.sleep(Constants.UPDATE_FREQ)
 
     def initRunMethod(self, task):
