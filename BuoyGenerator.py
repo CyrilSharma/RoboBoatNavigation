@@ -1,5 +1,5 @@
 import random
-from Buoy import Buoy
+from Buoy import Buoy, Snapshot
 from SimConfig import Config
 import FrameConstants as FC
 import Constants as C

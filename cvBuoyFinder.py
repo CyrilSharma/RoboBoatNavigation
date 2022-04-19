@@ -2,10 +2,10 @@
 # 24 MARCH 2022
 # AUTHORS: sydbelt & lexskeen
 import numpy as np
+from Buoy import Buoy, pixelBuoy
 import cv2
 
-def findBuoys(imageFrame):
-    cam = cv2.VideoCapture(0)
+def findBuoys(cam, imageFrame):
     __, imageFrame = cam.read()
     shape=imageFrame.shape
 
@@ -48,12 +48,15 @@ def findBuoys(imageFrame):
     # For yellow color
     yellow_mask = cv2.dilate(yellow_mask, kernal)
     
+    buoys = []
+    colors = ['Red', 'Green', 'Blue', 'Yellow']
     for mask in [red_mask, green_mask, blue_mask, yellow_mask]:
         contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        for _, contour in enumerate(contours):
+        for i, contour in enumerate(contours):
             area = cv2.contourArea(contour)
             if(max_area > area > min_area):
                 x, y, w, h = cv2.boundingRect(contour)
-                center=(x+(w/2), y+(h/2))
-
-    cam.release()
+                buoy = pixelBuoy((x,y), w, h, colors[i])
+                buoys.append(buoy)
+    
+    return buoys

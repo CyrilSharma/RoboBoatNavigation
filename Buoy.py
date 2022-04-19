@@ -13,6 +13,14 @@ class Buoy():
         self.pixelData.y = center[1]
         self.pixelData.width = width
         self.pixelData.height = height
+    
+class pixelBuoy():
+    def __init__(self, topLeft, width, height, color):
+        self.x = topLeft[0]
+        self.y = topLeft[1]
+        self.width = width
+        self.height = height
+        self.color = color
 
 class Snapshot():
     def __init__(self):
