@@ -7,14 +7,20 @@ import time
 import math
 import Constants
 import FrameConstants as FC
+import cv2
 from pynput import keyboard
+from cvBuoyFinder import findBuoys
 
 class Navigator():
     def __init__(self, config):
+        self.cam = cv2.VideoCapture(0)
         self.initRunMethod(config.task)
     
     def run(self):
-        pass
+        while True:
+            accl = self.runMethod()
+            print(accl)
+            time.sleep(Constants.UPDATE_FREQ)
 
     def initRunMethod(self, task):
         if task.lower() == 'navchanneldemo':
@@ -60,8 +66,8 @@ class Navigator():
 
         return normalize(addVectors(aDelta, rDelta), Constants.MAX_ACCELERATION)
 
-    def getClosestBuoys():
-        pass
+    def getClosestBuoys(self):
+        return utils.findClosestRealBuoyPair(findBuoys(self.cam))
 
 class SimulatedNavigator(Navigator):
     def __init__(self, config):

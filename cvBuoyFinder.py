@@ -5,7 +5,7 @@ import numpy as np
 from Buoy import Buoy, pixelBuoy
 import cv2
 
-def findBuoys(cam, imageFrame):
+def findBuoys(cam):
     __, imageFrame = cam.read()
     shape=imageFrame.shape
 
