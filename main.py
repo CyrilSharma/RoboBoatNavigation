@@ -9,6 +9,7 @@ def main():
     if not config.pixhawk: 
         navigator = SimulatedNavigator(config)
     else:
+        print("USING PIXHAWK")
         navigator = Navigator(config)
     navigator.run()
 

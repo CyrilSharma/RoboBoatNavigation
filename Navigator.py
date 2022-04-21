@@ -15,7 +15,7 @@ from dronekit import connect
 class Navigator():
     def __init__(self, config):
         self.cam = cv2.VideoCapture(0)
-        self.vehicle = connect("/dev/serial0", wait_ready=True)
+        self.vehicle = connect("/dev/serial0", wait_ready=True, baud=960000)
         self.initRunMethod(config.task)
     
     def run(self):
