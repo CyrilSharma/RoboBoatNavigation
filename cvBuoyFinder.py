@@ -50,13 +50,14 @@ def findBuoys(cam):
     
     buoys = []
     colors = ['Red', 'Green', 'Blue', 'Yellow']
+    index = 0
     for mask in [red_mask, green_mask, blue_mask, yellow_mask]:
         contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         for i, contour in enumerate(contours):
             area = cv2.contourArea(contour)
             if(max_area > area > min_area):
                 x, y, w, h = cv2.boundingRect(contour)
-                buoy = pixelBuoy((x,y), w, h, colors[i])
+                buoy = pixelBuoy((x,y), w, h, colors[index])
                 buoys.append(buoy)
-    
+        index += 1
     return buoys
