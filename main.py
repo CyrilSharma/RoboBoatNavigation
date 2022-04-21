@@ -1,6 +1,6 @@
 import argparse
 from BuoyGenerator import generateBuoys
-from Navigator import SimulatedNavigator, PixhawkNavigator
+from Navigator import SimulatedNavigator, Navigator
 from SimConfig import Config
 import utils
 
@@ -9,7 +9,7 @@ def main():
     if not config.pixhawk: 
         navigator = SimulatedNavigator(config)
     else:
-        navigator = PixhawkNavigator(config)
+        navigator = Navigator(config)
     navigator.run()
 
 def parseArguments():
