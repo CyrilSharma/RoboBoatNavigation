@@ -22,7 +22,8 @@ class Navigator():
         while True:
             accl = self.runMethod()
             velocity = self.vehicle.velocity
-            newVel = [velocity.x + accl[0] * Constants.UPDATE_FREQ, velocity.y + accl[1] * Constants.UPDATE_FREQ]
+            newVel = [velocity[0] + accl[0] * Constants.UPDATE_FREQ, velocity[1] + accl[1] * Constants.UPDATE_FREQ]
+            print(newVel)
             # send new Velocity
             time.sleep(Constants.UPDATE_FREQ)
 
