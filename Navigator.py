@@ -21,7 +21,9 @@ class Navigator():
     def run(self):
         while True:
             accl = self.runMethod()
+            print(accl)
             velocity = self.vehicle.velocity
+            print(velocity)
             newVel = [velocity[0] + accl[0] * Constants.UPDATE_FREQ, velocity[1] + accl[1] * Constants.UPDATE_FREQ]
             print(newVel)
             # send new Velocity
