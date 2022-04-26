@@ -25,8 +25,7 @@ class Navigator():
             velocity = self.vehicle.velocity
             print(velocity)
             newVel = [velocity[0] + accl[0] * Constants.UPDATE_FREQ, velocity[1] + accl[1] * Constants.UPDATE_FREQ]
-            print(newVel)
-            # send new Velocity
+            utils.send_ned_velocity(self.vehicle, newVel[0], newVel[1], 0)
             time.sleep(Constants.UPDATE_FREQ)
 
     def initRunMethod(self, task):
